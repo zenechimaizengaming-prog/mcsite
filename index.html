@@ -6,48 +6,36 @@
 <title>Useful Bedrock Packs</title>
 
 <style>
+
 body{
 margin:0;
 font-family:Arial;
-background:#0f0f0f;
 color:white;
+background: radial-gradient(circle at top, #1a1a1a, #0d0d0d 60%, #000000);
+overflow-x:hidden;
 }
 
-/* SPLASH SCREEN */
-#splash{
+/* glowing animated background */
+body::before{
+content:"";
 position:fixed;
-width:100%;
-height:100%;
-background:#0f0f0f;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:9999;
+top:-50%;
+left:-50%;
+width:200%;
+height:200%;
+background:
+radial-gradient(circle, rgba(0,255,136,0.10), transparent 40%),
+radial-gradient(circle, rgba(0,170,255,0.10), transparent 40%);
+animation:moveGlow 10s linear infinite;
+z-index:-1;
 }
 
-.logo{
-font-size:24px;
-font-weight:bold;
-color:#00e676;
-margin-bottom:15px;
+@keyframes moveGlow{
+0%{transform:translate(0,0);}
+50%{transform:translate(10%,10%);}
+100%{transform:translate(0,0);}
 }
 
-.spinner{
-width:40px;
-height:40px;
-border:4px solid #333;
-border-top:4px solid #00e676;
-border-radius:50%;
-animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-0%{transform:rotate(0deg);}
-100%{transform:rotate(360deg);}
-}
-
-/* MAIN UI */
 .header{
 background:linear-gradient(90deg,#00c853,#00b0ff);
 padding:18px;
@@ -57,6 +45,12 @@ text-align:center;
 .header h1{
 margin:0;
 font-size:22px;
+}
+
+.version{
+margin-top:6px;
+font-size:13px;
+color:#e0e0e0;
 }
 
 .category{
@@ -104,22 +98,23 @@ font-weight:bold;
 .card a:hover{
 background:#00e676;
 }
+
+.footer{
+text-align:center;
+padding:20px;
+color:#888;
+font-size:13px;
+}
+
 </style>
+
 </head>
 
 <body>
 
-<!-- SPLASH SCREEN -->
-<div id="splash">
-<div class="logo">🔥 Useful Bedrock Packs</div>
-<div class="spinner"></div>
-</div>
-
-<!-- MAIN CONTENT -->
-<div id="content" style="display:none;">
-
 <div class="header">
 <h1>🔥 Useful Bedrock Packs</h1>
+<div class="version">Version v1.10 • More packs coming soon 🚀</div>
 </div>
 
 <!-- FPS PACKS -->
@@ -127,11 +122,8 @@ background:#00e676;
 <div class="grid">
 
 <div class="card"><img src="ZenFPS_PRO.png"><h3>Zen FPS Pro</h3><a href="ZenFPS_PRO.mcpack" download>Download</a></div>
-
 <div class="card"><img src="Optifire.png"><h3>Optifire</h3><a href="Optifire.mcpack" download>Download</a></div>
-
 <div class="card"><img src="SodiumX.png"><h3>Sodium X</h3><a href="SodiumX.mcpack" download>Download</a></div>
-
 <div class="card"><img src="AsteroidClient.png"><h3>Asteroid Client</h3><a href="AsteroidClient.mcpack" download>Download</a></div>
 
 </div>
@@ -141,11 +133,8 @@ background:#00e676;
 <div class="grid">
 
 <div class="card"><img src="ZenPVPPack.png"><h3>Zen PvP Pack</h3><a href="ZenPVPPack.mcpack" download>Download</a></div>
-
 <div class="card"><img src="VenomPVP.png"><h3>Venom PvP</h3><a href="VenomPVP.mcpack" download>Download</a></div>
-
 <div class="card"><img src="LyroPVPUltimate.png"><h3>Lyro PvP Ultimate</h3><a href="LyroPVPUltimate.mcpack" download>Download</a></div>
-
 <div class="card"><img src="ZenUtilityHUD.png"><h3>Zen Utility HUD</h3><a href="ZenUtilityHUD.mcpack" download>Download</a></div>
 
 </div>
@@ -155,11 +144,8 @@ background:#00e676;
 <div class="grid">
 
 <div class="card"><img src="VDXDesktopUI.png"><h3>VDX Desktop UI</h3><a href="VDXDesktopUI.mcpack" download>Download</a></div>
-
 <div class="card"><img src="BedrockUI.png"><h3>Bedrock UI</h3><a href="BedrockUI.mcpack" download>Download</a></div>
-
 <div class="card"><img src="Ultramarine_Nightfall.png"><h3>Ultramarine Nightfall</h3><a href="Ultramarine_Nightfall.mcpack" download>Download</a></div>
-
 <div class="card"><img src="DéesseUI.png"><h3>Déesse UI</h3><a href="DéesseUI.mcpack" download>Download</a></div>
 
 </div>
@@ -169,11 +155,8 @@ background:#00e676;
 <div class="grid">
 
 <div class="card"><img src="Naturalist.png"><h3>Naturalist</h3><a href="Naturalist.mcaddon" download>Download</a></div>
-
 <div class="card"><img src="FURNICRAFT.png"><h3>FurniCraft</h3><a href="FURNICRAFT.mcpack" download>Download</a></div>
-
 <div class="card"><img src="Backpacks.png"><h3>Backpacks</h3><a href="Backpacks.mcaddon" download>Download</a></div>
-
 <div class="card"><img src="DynamicLightning.png"><h3>Dynamic Lightning</h3><a href="DynamicLightning.mcaddon" download>Download</a></div>
 
 </div>
@@ -183,25 +166,46 @@ background:#00e676;
 <div class="grid">
 
 <div class="card"><img src="JungleSurvivalHouse.png"><h3>Jungle House</h3><a href="JungleSurvivalHouse.mcworld" download>Download</a></div>
-
 <div class="card"><img src="StarterHouseSurvival.png"><h3>Starter House</h3><a href="StarterHouseSurvival.mcworld" download>Download</a></div>
-
 <div class="card"><img src="SpruceSurvivalHouse.png"><h3>Spruce House</h3><a href="SpruceSurvivalHouse.mcworld" download>Download</a></div>
-
 <div class="card"><img src="MedievalHouse.png"><h3>Medieval House</h3><a href="MedievalHouse.mcworld" download>Download</a></div>
 
 </div>
 
+<!-- COMING SOON -->
+<div class="category">🚀 Updates & Future Packs</div>
+<div class="grid">
+
+<div class="card">
+<img src="https://via.placeholder.com/300x120?text=Coming+Soon">
+<h3>More FPS Boost Packs</h3>
+<a href="#">Coming in v1.20</a>
 </div>
 
-<script>
-window.onload = function(){
-setTimeout(() => {
-document.getElementById("splash").style.display = "none";
-document.getElementById("content").style.display = "block";
-}, 2000);
-};
-</script>
+<div class="card">
+<img src="https://via.placeholder.com/300x120?text=Coming+Soon">
+<h3>New PvP Meta Packs</h3>
+<a href="#">Coming in v1.20</a>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/300x120?text=Coming+Soon">
+<h3>More Survival Houses</h3>
+<a href="#">Coming in v1.20</a>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/300x120?text=Coming+Soon">
+<h3>Secret Utility Packs</h3>
+<a href="#">Coming in v1.20</a>
+</div>
+
+</div>
+
+<div class="footer">
+⚡ Useful Bedrock Packs v1.10<br>
+More updates coming soon 🚀 (v1.20 planned)
+</div>
 
 </body>
 </html>
