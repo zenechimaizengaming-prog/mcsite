@@ -7,69 +7,15 @@
 
 <style>
 
-/* ===== LOADER ===== */
-#loader{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#0d0d0d;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:9999;
-}
-
-.spinner{
-width:60px;
-height:60px;
-border:5px solid #333;
-border-top:5px solid #00e676;
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin:auto;
-}
-
-@keyframes spin{
-0%{transform:rotate(0deg);}
-100%{transform:rotate(360deg);}
-}
-
-.loader-box h2{margin-top:15px;font-size:18px;}
-.loader-box p{color:#888;font-size:12px;}
-
-/* ===== BACKGROUND ===== */
+/* BACKGROUND */
 body{
 margin:0;
 font-family:Arial;
 color:white;
-background: radial-gradient(circle at top, #1a1a1a, #0d0d0d 60%, #000000);
-overflow-x:hidden;
+background:#0d0d0d;
 }
 
-body::before{
-content:"";
-position:fixed;
-top:-50%;
-left:-50%;
-width:200%;
-height:200%;
-background:
-radial-gradient(circle, rgba(0,255,136,0.10), transparent 40%),
-radial-gradient(circle, rgba(0,170,255,0.10), transparent 40%);
-animation:moveGlow 10s linear infinite;
-z-index:-1;
-}
-
-@keyframes moveGlow{
-0%{transform:translate(0,0);}
-50%{transform:translate(10%,10%);}
-100%{transform:translate(0,0);}
-}
-
-/* ===== UI ===== */
+/* HEADER */
 .header{
 background:linear-gradient(90deg,#00c853,#00b0ff);
 padding:18px;
@@ -79,60 +25,76 @@ text-align:center;
 .header h1{margin:0;font-size:22px;}
 
 .version{
-margin-top:6px;
 font-size:13px;
-color:#e0e0e0;
-line-height:1.4;
+margin-top:5px;
 }
 
+/* CATEGORY */
 .category{
-padding:12px 15px;
-font-size:18px;
+padding:14px;
+font-size:20px;
 color:#00e676;
 font-weight:bold;
 }
 
+/* GRID */
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:12px;
+grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+gap:14px;
 padding:12px;
 }
 
+/* CARD (FIXED FOR MOBILE VISIBILITY) */
 .card{
-background:#1c1c1c;
-border-radius:12px;
+background:#1a1a1a;
+border-radius:14px;
 overflow:hidden;
-box-shadow:0 2px 8px rgba(0,0,0,0.4);
+border:1px solid #2a2a2a;
 }
 
 .card img{
 width:100%;
-height:120px;
+height:130px;
 object-fit:cover;
 }
 
+/* TITLE */
 .card h3{
-font-size:14px;
-margin:8px;
+font-size:15px;
+margin:8px 10px 4px;
 }
 
+/* 🔥 DESCRIPTION (FORCED VISIBILITY) */
+.card p{
+font-size:13px;
+margin:0 10px 10px;
+color:#ffffff;
+opacity:1;
+font-weight:500;
+line-height:1.3;
+}
+
+/* BUTTON */
 .card a{
 display:block;
 text-align:center;
 background:#00c853;
-padding:10px;
+padding:11px;
 color:white;
 text-decoration:none;
 font-weight:bold;
 }
 
-.card a:hover{background:#00e676;}
+.card a:active{
+background:#00e676;
+}
 
+/* FOOTER */
 .footer{
 text-align:center;
 padding:20px;
-color:#888;
+color:#aaa;
 font-size:13px;
 }
 
@@ -141,122 +103,113 @@ font-size:13px;
 
 <body>
 
-<!-- LOADING SCREEN -->
-<div id="loader">
-  <div class="loader-box">
-    <div class="spinner"></div>
-    <h2>Loading Packs...</h2>
-    <p>Useful Bedrock Packs v1.10</p>
-  </div>
-</div>
-
 <div class="header">
 <h1>🔥 Useful Bedrock Packs</h1>
-<div class="version">
-Version v1.10<br>
-Works on Minecraft Bedrock 1.21+ 🚀<br>
-More packs coming soon
-</div>
+<div class="version">v1.10 • Works on Minecraft 1.21+</div>
 </div>
 
-<!-- FPS -->
 <div class="category">⚡ FPS Packs</div>
 <div class="grid">
 
-<div class="card"><img src="ZenFPS_PRO.png"><h3>Zen FPS Pro</h3><a href="ZenFPS_PRO.mcpack" download>Download</a></div>
-<div class="card"><img src="Optifire.png"><h3>Optifire</h3><a href="Optifire.mcpack" download>Download</a></div>
-<div class="card"><img src="SodiumX.png"><h3>Sodium X</h3><a href="SodiumX.mcpack" download>Download</a></div>
-<div class="card"><img src="AsteroidClient.png"><h3>Asteroid Client</h3><a href="AsteroidClient.mcpack" download>Download</a></div>
+<div class="card">
+<img src="ZenFPS_PRO.png">
+<h3>Zen FPS Pro</h3>
+<p>Boosts FPS for smoother gameplay and stable performance</p>
+<a href="ZenFPS_PRO.mcpack" download>Download</a>
+</div>
+
+<div class="card">
+<img src="Optifire.png">
+<h3>Optifire</h3>
+<p>Improves performance and reduces lag spikes</p>
+<a href="Optifire.mcpack" download>Download</a>
+</div>
+
+<div class="card">
+<img src="SodiumX.png">
+<h3>Sodium X</h3>
+<p>Ultra FPS optimization for low-end devices</p>
+<a href="SodiumX.mcpack" download>Download</a>
+</div>
+
+<div class="card">
+<img src="AsteroidClient.png">
+<h3>Asteroid Client</h3>
+<p>Client-style FPS boost with smooth visuals</p>
+<a href="AsteroidClient.mcpack" download>Download</a>
+</div>
 
 </div>
 
-<!-- PVP -->
 <div class="category">🔫 PvP Packs</div>
 <div class="grid">
 
-<div class="card"><img src="ZenPVPPack.png"><h3>Zen PvP Pack</h3><a href="ZenPVPPack.mcpack" download>Download</a></div>
-<div class="card"><img src="VenomPVP.png"><h3>Venom PvP</h3><a href="VenomPVP.mcpack" download>Download</a></div>
-<div class="card"><img src="LyroPVPUltimate.png"><h3>Lyro PvP Ultimate</h3><a href="LyroPVPUltimate.mcpack" download>Download</a></div>
-<div class="card"><img src="ZenUtilityHUD.png"><h3>Zen Utility HUD</h3><a href="ZenUtilityHUD.mcpack" download>Download</a></div>
-
-</div>
-
-<!-- UI -->
-<div class="category">🧩 UI Menu</div>
-<div class="grid">
-
-<div class="card"><img src="VDXDesktopUI.png"><h3>VDX Desktop UI</h3><a href="VDXDesktopUI.mcpack" download>Download</a></div>
-<div class="card"><img src="BedrockUI.png"><h3>Bedrock UI</h3><a href="BedrockUI.mcpack" download>Download</a></div>
-<div class="card"><img src="Ultramarine_Nightfall.png"><h3>Ultramarine Nightfall</h3><a href="Ultramarine_Nightfall.mcpack" download>Download</a></div>
-<div class="card"><img src="DéesseUI.png"><h3>Déesse UI</h3><a href="DéesseUI.mcpack" download>Download</a></div>
-
-</div>
-
-<!-- SURVIVAL ADDONS -->
-<div class="category">📦 Survival Addons</div>
-<div class="grid">
-
-<div class="card"><img src="Naturalist.png"><h3>Naturalist</h3><a href="Naturalist.mcaddon" download>Download</a></div>
-<div class="card"><img src="FURNICRAFT.png"><h3>FurniCraft</h3><a href="FURNICRAFT.mcpack" download>Download</a></div>
-<div class="card"><img src="Backpacks.png"><h3>Backpacks</h3><a href="Backpacks.mcaddon" download>Download</a></div>
-<div class="card"><img src="DynamicLightning.png"><h3>Dynamic Lightning</h3><a href="DynamicLightning.mcaddon" download>Download</a></div>
-
-</div>
-
-<!-- SURVIVAL HOUSE -->
-<div class="category">🏠 Survival House</div>
-<div class="grid">
-
-<div class="card"><img src="JungleSurvivalHouse.png"><h3>Jungle House</h3><a href="JungleSurvivalHouse.mcworld" download>Download</a></div>
-<div class="card"><img src="StarterHouseSurvival.png"><h3>Starter House</h3><a href="StarterHouseSurvival.mcworld" download>Download</a></div>
-<div class="card"><img src="SpruceSurvivalHouse.png"><h3>Spruce House</h3><a href="SpruceSurvivalHouse.mcworld" download>Download</a></div>
-<div class="card"><img src="MedievalHouse.png"><h3>Medieval House</h3><a href="MedievalHouse.mcworld" download>Download</a></div>
-
-</div>
-
-<!-- COMING SOON -->
-<div class="category">🚀 Updates & Future Packs</div>
-<div class="grid">
-
 <div class="card">
-<img src="https://via.placeholder.com/300x120?text=Coming+Soon">
-<h3>More FPS Packs</h3>
-<a href="#">Coming in v1.20</a>
+<img src="ZenPVPPack.png">
+<h3>Zen PvP Pack</h3>
+<p>Clean PvP visuals with better hit visibility</p>
+<a href="ZenPVPPack.mcpack" download>Download</a>
 </div>
 
 <div class="card">
-<img src="https://via.placeholder.com/300x120?text=Coming+Soon">
-<h3>New PvP Meta Packs</h3>
-<a href="#">Coming in v1.20</a>
+<img src="VenomPVP.png">
+<h3>Venom PvP</h3>
+<p>Sharp textures for competitive PvP fights</p>
+<a href="VenomPVP.mcpack" download>Download</a>
 </div>
 
 <div class="card">
-<img src="https://via.placeholder.com/300x120?text=Coming+Soon">
-<h3>More Survival Houses</h3>
-<a href="#">Coming in v1.20</a>
+<img src="LyroPVPUltimate.png">
+<h3>Lyro PvP Ultimate</h3>
+<p>Advanced PvP texture enhancement pack</p>
+<a href="LyroPVPUltimate.mcpack" download>Download</a>
 </div>
 
 <div class="card">
-<img src="https://via.placeholder.com/300x120?text=Coming+Soon">
-<h3>Secret Utility Packs</h3>
-<a href="#">Coming in v1.20</a>
+<img src="ZenUtilityHUD.png">
+<h3>Zen Utility HUD</h3>
+<p>Improved HUD for PvP awareness and tracking</p>
+<a href="ZenUtilityHUD.mcpack" download>Download</a>
+</div>
+
+</div>
+
+<div class="category">🏠 Survival Houses</div>
+<div class="grid">
+
+<div class="card">
+<img src="JungleSurvivalHouse.png">
+<h3>Jungle House</h3>
+<p>Starter jungle survival base for early game</p>
+<a href="JungleSurvivalHouse.mcworld" download>Download</a>
+</div>
+
+<div class="card">
+<img src="StarterHouseSurvival.png">
+<h3>Starter House</h3>
+<p>Simple starter survival house for beginners</p>
+<a href="StarterHouseSurvival.mcworld" download>Download</a>
+</div>
+
+<div class="card">
+<img src="SpruceSurvivalHouse.png">
+<h3>Spruce House</h3>
+<p>Wooden survival house design for safe living</p>
+<a href="SpruceSurvivalHouse.mcworld" download>Download</a>
+</div>
+
+<div class="card">
+<img src="MedievalHouse.png">
+<h3>Medieval House</h3>
+<p>Medieval-style survival base build design</p>
+<a href="MedievalHouse.mcworld" download>Download</a>
 </div>
 
 </div>
 
 <div class="footer">
-⚡ Useful Bedrock Packs v1.10<br>
-Works on Minecraft Bedrock 1.21+<br>
-More updates coming soon 🚀
+v1.10 • Minecraft Bedrock 1.21+ • More packs coming soon 🚀
 </div>
-
-<script>
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    document.getElementById("loader").style.display = "none";
-  }, 1500);
-});
-</script>
 
 </body>
 </html>
