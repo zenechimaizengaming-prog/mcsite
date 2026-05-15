@@ -7,6 +7,40 @@
 
 <style>
 
+/* ===== LOADER ===== */
+#loader{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#0d0d0d;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+}
+
+.spinner{
+width:60px;
+height:60px;
+border:5px solid #333;
+border-top:5px solid #00e676;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin:auto;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+.loader-box h2{margin-top:15px;font-size:18px;}
+.loader-box p{color:#888;font-size:12px;}
+
+/* ===== BACKGROUND ===== */
 body{
 margin:0;
 font-family:Arial;
@@ -15,7 +49,6 @@ background: radial-gradient(circle at top, #1a1a1a, #0d0d0d 60%, #000000);
 overflow-x:hidden;
 }
 
-/* animated glow background */
 body::before{
 content:"";
 position:fixed;
@@ -36,16 +69,14 @@ z-index:-1;
 100%{transform:translate(0,0);}
 }
 
+/* ===== UI ===== */
 .header{
 background:linear-gradient(90deg,#00c853,#00b0ff);
 padding:18px;
 text-align:center;
 }
 
-.header h1{
-margin:0;
-font-size:22px;
-}
+.header h1{margin:0;font-size:22px;}
 
 .version{
 margin-top:6px;
@@ -96,9 +127,7 @@ text-decoration:none;
 font-weight:bold;
 }
 
-.card a:hover{
-background:#00e676;
-}
+.card a:hover{background:#00e676;}
 
 .footer{
 text-align:center;
@@ -108,10 +137,18 @@ font-size:13px;
 }
 
 </style>
-
 </head>
 
 <body>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <div class="loader-box">
+    <div class="spinner"></div>
+    <h2>Loading Packs...</h2>
+    <p>Useful Bedrock Packs v1.10</p>
+  </div>
+</div>
 
 <div class="header">
 <h1>🔥 Useful Bedrock Packs</h1>
@@ -122,7 +159,7 @@ More packs coming soon
 </div>
 </div>
 
-<!-- FPS PACKS -->
+<!-- FPS -->
 <div class="category">⚡ FPS Packs</div>
 <div class="grid">
 
@@ -133,7 +170,7 @@ More packs coming soon
 
 </div>
 
-<!-- PVP PACKS -->
+<!-- PVP -->
 <div class="category">🔫 PvP Packs</div>
 <div class="grid">
 
@@ -144,7 +181,7 @@ More packs coming soon
 
 </div>
 
-<!-- UI MENU -->
+<!-- UI -->
 <div class="category">🧩 UI Menu</div>
 <div class="grid">
 
@@ -183,7 +220,7 @@ More packs coming soon
 
 <div class="card">
 <img src="https://via.placeholder.com/300x120?text=Coming+Soon">
-<h3>More FPS Boost Packs</h3>
+<h3>More FPS Packs</h3>
 <a href="#">Coming in v1.20</a>
 </div>
 
@@ -212,6 +249,14 @@ More packs coming soon
 Works on Minecraft Bedrock 1.21+<br>
 More updates coming soon 🚀
 </div>
+
+<script>
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("loader").style.display = "none";
+  }, 1500);
+});
+</script>
 
 </body>
 </html>
