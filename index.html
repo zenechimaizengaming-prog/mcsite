@@ -94,6 +94,9 @@ padding-bottom:5px;
 <input id="search" placeholder="Search packs...">
 </div>
 
+<div class="cat">🏆 Top Downloaded Packs</div>
+<div id="top"></div>
+
 <div id="app"></div>
 
 <!-- Firebase -->
@@ -101,19 +104,58 @@ padding-bottom:5px;
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
+
+/* =======================
+   🔥 VERSION SYSTEM
+======================= */
+const CURRENT_VERSION = "1.11";
+
+async function checkUpdate(){
+try{
+const res = await fetch("./version.json?v=" + Date.now());
+const data = await res.json();
+
+if(data.version !== CURRENT_VERSION){
+showUpdatePopup(data.updateUrl, data.version);
+}
+}catch(e){
+console.log("Version check failed", e);
+}
+}
+
+function showUpdatePopup(url, version){
+
+document.body.innerHTML = `
+<div style="height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#000;color:white;text-align:center;padding:20px;">
+<h1>🚨 Update Required</h1>
+<p>Version ${version} is required to continue</p>
+
+<button onclick="window.location.href='${url}'"
+style="padding:12px 20px;background:#00c853;border:none;color:white;margin-top:15px;border-radius:8px;">
+⬇ Download Update
+</button>
+</div>
+`;
+}
+
+/* =======================
+   🔥 FIREBASE INIT
+======================= */
 const firebaseConfig = {
-  apiKey: "AIzaSyAnAJG_TFMX3CbTbdo3MD3KHk8rK8TxIMY",
-  authDomain: "mcpackss-62645.firebaseapp.com",
-  projectId: "mcpackss-62645",
-  storageBucket: "mcpackss-62645.firebasestorage.app",
-  messagingSenderId: "770814437665",
-  appId: "1:770814437665:web:bb3958093106809ed67660"
+apiKey: "AIzaSyAnAJG_TFMX3CbTbdo3MD3KHk8rK8TxIMY",
+authDomain: "mcpackss-62645.firebaseapp.com",
+projectId: "mcpackss-62645",
+storageBucket: "mcpackss-62645.firebasestorage.app",
+messagingSenderId: "770814437665",
+appId: "1:770814437665:web:bb3958093106809ed67660"
 };
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-/* FULL PACK LIST */
+/* =======================
+   PACK LIST
+======================= */
 const packs = [
 {id:"zenfps",name:"Zen FPS Pro",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
 {id:"optifire",name:"Optifire",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},
@@ -148,8 +190,10 @@ const packs = [
 {id:"starter",name:"Starter House",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"}
 ];
 
-/* GET COUNT */
-function getCount(id, cb){
+/* =======================
+   COUNTER SYSTEM
+======================= */
+function getCount(id,cb){
 db.collection("downloads").doc(id).get().then(doc=>{
 if(!doc.exists){
 db.collection("downloads").doc(id).set({count:0});
@@ -160,48 +204,46 @@ cb(doc.data().count);
 });
 }
 
-/* UPDATE UI */
 function updateCount(id,c){
 let el=document.getElementById("c_"+id);
 if(el) el.innerText="Downloads: "+c;
 }
 
-/* 🔥 FIXED DOWNLOAD (PYTHON-LIKE BEHAVIOR) */
-function download(id, file){
+/* =======================
+   DOWNLOAD FIXED
+======================= */
+function download(id,file){
 
-const ref = db.collection("downloads").doc(id);
+const ref=db.collection("downloads").doc(id);
 
-/* increment FIRST */
 ref.get().then(doc=>{
 let c = doc.exists ? doc.data().count : 0;
 ref.set({count:c+1});
 updateCount(id,c+1);
 });
 
-/* force fresh download every click */
 setTimeout(()=>{
 
-const url =
-"./" + file +
-"?v=" + Date.now() +
-"&r=" + Math.random();
+const url = "./"+file+"?v="+Date.now()+"&r="+Math.random();
 
-const a = document.createElement("a");
-a.href = url;
-a.download = file;
-a.style.display = "none";
+const a=document.createElement("a");
+a.href=url;
+a.download=file;
+a.style.display="none";
 
 document.body.appendChild(a);
 a.click();
 document.body.removeChild(a);
 
-}, 100);
+renderTop();
 
+},100);
 }
 
-/* RENDER */
+/* =======================
+   MAIN RENDER
+======================= */
 function render(){
-
 let app=document.getElementById("app");
 let grouped={};
 
@@ -224,9 +266,7 @@ html+=`
 <button onclick="download('${p.id}','${p.file}')">Download</button>
 </div>`;
 
-getCount(p.id,c=>{
-updateCount(p.id,c);
-});
+getCount(p.id,c=>updateCount(p.id,c));
 });
 
 html+="</div>";
@@ -235,7 +275,39 @@ html+="</div>";
 app.innerHTML=html;
 }
 
-render();
+/* =======================
+   TOP RANKING
+======================= */
+async function getTopPacks(){
+const snap=await db.collection("downloads").get();
+let list=[];
+snap.forEach(doc=>{
+list.push({id:doc.id,count:doc.data().count||0});
+});
+list.sort((a,b)=>b.count-a.count);
+return list;
+}
+
+async function renderTop(){
+const top=await getTopPacks();
+let html=`<div class="grid">`;
+
+top.slice(0,5).forEach(t=>{
+let pack=packs.find(p=>p.id===t.id);
+if(!pack)return;
+
+html+=`
+<div class="card">
+<img src="${pack.img}">
+<h3>${pack.name}</h3>
+<div class="counter">🔥 ${t.count} downloads</div>
+<button onclick="download('${pack.id}','${pack.file}')">Download</button>
+</div>`;
+});
+
+html+=`</div>`;
+document.getElementById("top").innerHTML=html;
+}
 
 /* SEARCH */
 document.getElementById("search").addEventListener("input",e=>{
@@ -244,6 +316,12 @@ document.querySelectorAll(".card").forEach(c=>{
 c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
 });
 });
+
+/* INIT */
+render();
+renderTop();
+checkUpdate();
+
 </script>
 
 </body>
