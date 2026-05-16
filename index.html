@@ -6,19 +6,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;font-family:Arial;background:#0d0d0d;color:white;}
-.header{text-align:center;padding:20px;background:#111;}
-.search{text-align:center;padding:10px;}
-input{width:90%;max-width:400px;padding:10px;border-radius:10px;border:none;outline:none;}
+body{
+margin:0;
+font-family:Arial;
+background:#0d0d0d;
+color:white;
+}
 
-.cat{padding:12px;font-size:20px;color:#00e676;font-weight:bold;}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;padding:10px;}
+.header{
+text-align:center;
+padding:20px;
+background:#111;
+}
 
-.card{background:#1a1a1a;border-radius:10px;overflow:hidden;border:1px solid #333;text-align:center;}
-.card img{width:100%;height:120px;object-fit:cover;}
-.card h3{font-size:14px;margin:5px;}
-.card button{width:100%;padding:8px;background:#00c853;border:none;color:white;font-weight:bold;}
-.counter{font-size:12px;color:#aaa;padding-bottom:5px;}
+.search{
+text-align:center;
+padding:10px;
+}
+
+input{
+width:90%;
+max-width:400px;
+padding:10px;
+border-radius:10px;
+border:none;
+outline:none;
+}
+
+.cat{
+padding:12px;
+font-size:20px;
+color:#00e676;
+font-weight:bold;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:10px;
+padding:10px;
+}
+
+.card{
+background:#1a1a1a;
+border-radius:10px;
+overflow:hidden;
+border:1px solid #333;
+text-align:center;
+}
+
+.card img{
+width:100%;
+height:120px;
+object-fit:cover;
+}
+
+.card h3{
+font-size:14px;
+margin:5px;
+}
+
+.card button{
+width:100%;
+padding:8px;
+background:#00c853;
+border:none;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.counter{
+font-size:12px;
+color:#aaa;
+padding-bottom:5px;
+}
 </style>
 </head>
 
@@ -51,7 +113,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-/* FULL PACK LIST (SAFE STATIC LIST) */
+/* FULL PACK LIST */
 const packs = [
 {id:"zenfps",name:"Zen FPS Pro",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
 {id:"optifire",name:"Optifire",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},
@@ -86,43 +148,60 @@ const packs = [
 {id:"starter",name:"Starter House",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"}
 ];
 
-/* FIREBASE */
-function getCount(id, callback){
+/* GET COUNT */
+function getCount(id, cb){
 db.collection("downloads").doc(id).get().then(doc=>{
 if(!doc.exists){
 db.collection("downloads").doc(id).set({count:0});
-callback(0);
-} else {
-callback(doc.data().count);
+cb(0);
+}else{
+cb(doc.data().count);
 }
 });
 }
 
-function updateCount(id,count){
+/* UPDATE UI */
+function updateCount(id,c){
 let el=document.getElementById("c_"+id);
-if(el) el.innerText="Downloads: "+count;
+if(el) el.innerText="Downloads: "+c;
 }
 
-/* DOWNLOAD FIX */
-function download(id,file){
-const ref=db.collection("downloads").doc(id);
+/* 🔥 FIXED DOWNLOAD (PYTHON-LIKE BEHAVIOR) */
+function download(id, file){
 
+const ref = db.collection("downloads").doc(id);
+
+/* increment FIRST */
 ref.get().then(doc=>{
-let c=doc.exists?doc.data().count:0;
+let c = doc.exists ? doc.data().count : 0;
 ref.set({count:c+1});
 updateCount(id,c+1);
 });
 
-const a=document.createElement("a");
-a.href="./"+file;
-a.download=file;
+/* force fresh download every click */
+setTimeout(()=>{
+
+const url =
+"./" + file +
+"?v=" + Date.now() +
+"&r=" + Math.random();
+
+const a = document.createElement("a");
+a.href = url;
+a.download = file;
+a.style.display = "none";
+
 document.body.appendChild(a);
 a.click();
 document.body.removeChild(a);
+
+}, 100);
+
 }
 
-/* RENDER SAFE (NO ASYNC HTML BUG) */
+/* RENDER */
 function render(){
+
 let app=document.getElementById("app");
 let grouped={};
 
@@ -145,8 +224,7 @@ html+=`
 <button onclick="download('${p.id}','${p.file}')">Download</button>
 </div>`;
 
-/* load count after render */
-getCount(p.id, c=>{
+getCount(p.id,c=>{
 updateCount(p.id,c);
 });
 });
