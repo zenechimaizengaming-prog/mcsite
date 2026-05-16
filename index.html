@@ -1,359 +1,172 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-
 <meta charset="UTF-8">
+<title>MCPE Packs Hub</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MCPE Packs Download | Minecraft Bedrock Texture Packs, FPS, PvP & Addons 1.21+</title>
-
-<meta name="description" content="Download Minecraft Bedrock texture packs, FPS boost packs, PvP packs, shaders, UI packs, survival addons and survival houses. Free MCPE downloads 1.21+.">
-
-<meta name="keywords" content="mcpe packs download, minecraft bedrock texture packs, fps boost mcpe, pvp packs, mcaddon, mcpack, mcworld, minecraft shaders, actions and stuff">
-
-<meta name="author" content="Zenechi Packs">
-
-<meta name="google-site-verification" content="Pdbsu7lQblq0fmRRBuiQtHY7ZBMm0EXqqOpP_-rBO6Q" />
-
-<meta property="og:title" content="MCPE Packs Download">
-<meta property="og:description" content="Minecraft Bedrock FPS, PvP, UI, Shader and Survival Addons for 1.21+">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://zenechimaizengaming-prog.github.io/mcsite/">
-
 <style>
+body{margin:0;font-family:Arial;background:#0d0d0d;color:white;}
+.header{text-align:center;padding:20px;background:#111;}
+.search{text-align:center;padding:10px;}
+input{width:90%;max-width:400px;padding:10px;border-radius:10px;border:none;outline:none;}
 
-body{
-margin:0;
-font-family:Arial;
-background:#0d0d0d;
-color:white;
-}
+.cat{padding:12px;font-size:20px;color:#00e676;font-weight:bold;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;padding:10px;}
 
-.header{
-background:linear-gradient(90deg,#00c853,#00b0ff);
-padding:20px;
-text-align:center;
-}
-
-.header h1{
-margin:0;
-font-size:24px;
-}
-
-.version{
-margin-top:5px;
-font-size:13px;
-color:#ddd;
-}
-
-.intro{
-padding:14px;
-font-size:14px;
-line-height:1.5;
-}
-
-.category{
-padding:14px;
-font-size:22px;
-font-weight:bold;
-color:#00e676;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-gap:14px;
-padding:12px;
-}
-
-.card{
-background:#1a1a1a;
-border-radius:14px;
-overflow:hidden;
-border:1px solid #2a2a2a;
-}
-
-.card img{
-width:100%;
-height:130px;
-object-fit:cover;
-}
-
-.card h3{
-font-size:15px;
-margin:8px 10px 4px;
-}
-
-.card p{
-font-size:12px;
-margin:0 10px 10px;
-opacity:0.9;
-line-height:1.4;
-}
-
-.card a{
-display:block;
-text-align:center;
-background:#00c853;
-padding:11px;
-color:white;
-text-decoration:none;
-font-weight:bold;
-}
-
-.footer{
-text-align:center;
-padding:20px;
-color:#aaa;
-font-size:13px;
-}
-
+.card{background:#1a1a1a;border-radius:10px;overflow:hidden;border:1px solid #333;text-align:center;}
+.card img{width:100%;height:120px;object-fit:cover;}
+.card h3{font-size:14px;margin:5px;}
+.card button{width:100%;padding:8px;background:#00c853;border:none;color:white;font-weight:bold;}
+.counter{font-size:12px;color:#aaa;padding-bottom:5px;}
 </style>
-
 </head>
 
 <body>
 
-<div style="display:none;">
-mcpe packs download minecraft bedrock texture packs fps boost pvp ui addons shaders mcaddon mcpack mcworld 1.21 free
-</div>
-
 <div class="header">
-<h1>🔥 MCPE Packs Download</h1>
-<div class="version">Minecraft Bedrock 1.21+ • FPS • PvP • UI • Shaders</div>
+<h1>🔥 MCPE Packs Hub</h1>
 </div>
 
-<div class="intro">
-Looking for MCPE packs download? Download Minecraft Bedrock texture packs, FPS boost packs, PvP packs, UI packs, shaders, survival addons and survival maps for Minecraft Bedrock Edition 1.21+.
+<div class="search">
+<input id="search" placeholder="Search packs...">
 </div>
 
-<!-- FPS -->
-<div id="fps" class="category">⚡ FPS Packs</div>
+<div id="app"></div>
 
-<div class="grid">
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAnAJG_TFMX3CbTbdo3MD3KHk8rK8TxIMY",
+  authDomain: "mcpackss-62645.firebaseapp.com",
+  projectId: "mcpackss-62645",
+  storageBucket: "mcpackss-62645.firebasestorage.app",
+  messagingSenderId: "770814437665",
+  appId: "1:770814437665:web:bb3958093106809ed67660"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* FULL PACK LIST (SAFE STATIC LIST) */
+const packs = [
+{id:"zenfps",name:"Zen FPS Pro",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
+{id:"optifire",name:"Optifire",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},
+{id:"sodiumx",name:"Sodium X",file:"SodiumX.mcpack",img:"SodiumX.png",cat:"FPS"},
+{id:"asteroid",name:"Asteroid Client",file:"AsteroidClient.mcpack",img:"AsteroidClient.png",cat:"FPS"},
+
+{id:"zenpvp",name:"Zen PvP Pack",file:"ZenPVPPack.mcpack",img:"ZenPVPPack.png",cat:"PvP"},
+{id:"venom",name:"Venom PvP",file:"VenomPVP.mcpack",img:"VenomPVP.png",cat:"PvP"},
+{id:"lyro",name:"Lyro PvP Ultimate",file:"LyroPVPUltimate.mcpack",img:"LyroPVPUltimate.png",cat:"PvP"},
+{id:"zenutil",name:"Zen Utility HUD",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP"},
+
+{id:"actions",name:"Actions & Stuff",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Actions"},
+
+{id:"bedrockui",name:"Bedrock UI",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI"},
+{id:"vdx",name:"VDX Desktop UI",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI"},
+{id:"deesse",name:"Déesse UI",file:"DéesseUI.mcpack",img:"DéesseUI.png",cat:"UI"},
+{id:"ultra",name:"Ultramarine Nightfall",file:"Ultramarine_Nightfall.mcpack",img:"Ultramarine_Nightfall.png",cat:"UI"},
+
+{id:"yummy",name:"Yummysheep Shader",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders"},
+{id:"newb",name:"NewbX Legacy",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders"},
+{id:"nr",name:"NR Shader",file:"NRShader.mcpack",img:"NRShader.png",cat:"Shaders"},
+{id:"rg",name:"RG Shader",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders"},
+
+{id:"backpacks",name:"Backpacks",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival"},
+{id:"dynamic",name:"Dynamic Lightning",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival"},
+{id:"furni",name:"Furnicraft",file:"FURNICRAFT.mcpack",img:"FURNICRAFT.png",cat:"Survival"},
+{id:"naturalist",name:"Naturalist",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival"},
+
+{id:"jungle",name:"Jungle House",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses"},
+{id:"medieval",name:"Medieval House",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses"},
+{id:"spruce",name:"Spruce House",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses"},
+{id:"starter",name:"Starter House",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"}
+];
+
+/* FIREBASE */
+function getCount(id, callback){
+db.collection("downloads").doc(id).get().then(doc=>{
+if(!doc.exists){
+db.collection("downloads").doc(id).set({count:0});
+callback(0);
+} else {
+callback(doc.data().count);
+}
+});
+}
+
+function updateCount(id,count){
+let el=document.getElementById("c_"+id);
+if(el) el.innerText="Downloads: "+count;
+}
+
+/* DOWNLOAD FIX */
+function download(id,file){
+const ref=db.collection("downloads").doc(id);
+
+ref.get().then(doc=>{
+let c=doc.exists?doc.data().count:0;
+ref.set({count:c+1});
+updateCount(id,c+1);
+});
+
+const a=document.createElement("a");
+a.href="./"+file;
+a.download=file;
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+}
+
+/* RENDER SAFE (NO ASYNC HTML BUG) */
+function render(){
+let app=document.getElementById("app");
+let grouped={};
+
+packs.forEach(p=>{
+if(!grouped[p.cat]) grouped[p.cat]=[];
+grouped[p.cat].push(p);
+});
+
+let html="";
+
+for(let cat in grouped){
+html+=`<div class="cat">${cat}</div><div class="grid">`;
+
+grouped[cat].forEach(p=>{
+html+=`
 <div class="card">
-<img src="ZenFPS_PRO.png">
-<h3>Zen FPS Pro</h3>
-<p>Boost FPS for smoother gameplay.</p>
-<a href="ZenFPS_PRO.mcpack" download>Download</a>
-</div>
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<div class="counter" id="c_${p.id}">Loading...</div>
+<button onclick="download('${p.id}','${p.file}')">Download</button>
+</div>`;
 
-<div class="card">
-<img src="Optifire.png">
-<h3>Optifire</h3>
-<p>Performance boost texture pack.</p>
-<a href="Optifire.mcpack" download>Download</a>
-</div>
+/* load count after render */
+getCount(p.id, c=>{
+updateCount(p.id,c);
+});
+});
 
-<div class="card">
-<img src="SodiumX.png">
-<h3>Sodium X</h3>
-<p>Ultra FPS optimization pack.</p>
-<a href="SodiumX.mcpack" download>Download</a>
-</div>
+html+="</div>";
+}
 
-<div class="card">
-<img src="AsteroidClient.png">
-<h3>Asteroid Client</h3>
-<p>Client-style FPS enhancements.</p>
-<a href="AsteroidClient.mcpack" download>Download</a>
-</div>
+app.innerHTML=html;
+}
 
-</div>
+render();
 
-<!-- PVP -->
-<div id="pvp" class="category">🔫 PvP Packs</div>
-
-<div class="grid">
-
-<div class="card">
-<img src="ZenPVPPack.png">
-<h3>Zen PvP Pack</h3>
-<p>Clean PvP visuals and textures.</p>
-<a href="ZenPVPPack.mcpack" download>Download</a>
-</div>
-
-<div class="card">
-<img src="VenomPVP.png">
-<h3>Venom PvP</h3>
-<p>Sharp PvP textures and HUD.</p>
-<a href="VenomPVP.mcpack" download>Download</a>
-</div>
-
-<div class="card">
-<img src="LyroPVPUltimate.png">
-<h3>Lyro PvP Ultimate</h3>
-<p>Advanced PvP pack setup.</p>
-<a href="LyroPVPUltimate.mcpack" download>Download</a>
-</div>
-
-<div class="card">
-<img src="ZenUtilityHUD.png">
-<h3>Zen Utility HUD</h3>
-<p>Improved PvP HUD visuals.</p>
-<a href="ZenUtilityHUD.mcpack" download>Download</a>
-</div>
-
-</div>
-
-<!-- UI -->
-<div id="ui" class="category">🧩 UI Menu</div>
-
-<div class="grid">
-
-<div class="card">
-<img src="VDXDesktopUI.png">
-<h3>VDX Desktop UI</h3>
-<p>Desktop-inspired Minecraft UI.</p>
-<a href="VDXDesktopUI.mcpack" download>Download</a>
-</div>
-
-<div class="card">
-<img src="BedrockUI.png">
-<h3>Bedrock UI</h3>
-<p>Simple and clean UI pack.</p>
-<a href="BedrockUI.mcpack" download>Download</a>
-</div>
-
-<div class="card">
-<img src="Ultramarine_Nightfall.png">
-<h3>Ultramarine Nightfall</h3>
-<p>Dark futuristic UI visuals.</p>
-<a href="Ultramarine_Nightfall.mcpack" download>Download</a>
-</div>
-
-<div class="card">
-<img src="DéesseUI.png">
-<h3>Déesse UI</h3>
-<p>Minimal smooth UI design.</p>
-<a href="DéesseUI.mcpack" download>Download</a>
-</div>
-
-</div>
-
-<!-- ACTIONS -->
-<div id="actions" class="category">⚔️ Actions and Stuff</div>
-
-<div class="grid">
-
-<div class="card">
-<img src="Actions-and-Stuff.png">
-<h3>Actions And Stuff</h3>
-<p>Improves animations, actions, and gameplay visuals.</p>
-<a href="Actions-and-Stuff.mcpack" download>Download</a>
-</div>
-
-</div>
-
-<!-- SHADERS -->
-<div id="shaders" class="category">🌅 Shaders</div>
-
-<div class="grid">
-
-<div class="card">
-<img src="YummysheepShader.png">
-<h3>Yummysheep Shader</h3>
-<p>Colorful shader with smooth lighting and sky effects.</p>
-<a href="YummysheepShader.mcpack" download>Download</a>
-</div>
-
-<div class="card">
-<img src="NewbXLegacy.png">
-<h3>Newb X Legacy</h3>
-<p>Vanilla-style shader with realistic lighting visuals.</p>
-<a href="NewbXLegacy.mcpack" download>Download</a>
-</div>
-
-<div class="card">
-<img src="NRShader.png">
-<h3>NR Shader</h3>
-<p>Enhanced shadows, water and environment visuals.</p>
-<a href="NRShader.mcpack" download>Download</a>
-</div>
-
-<div class="card">
-<img src="RGShader.png">
-<h3>RG Shader</h3>
-<p>RenderDragon compatible shader for Bedrock 1.21+.</p>
-<a href="RGShader.mcpack" download>Download</a>
-</div>
-
-</div>
-
-<!-- SURVIVAL ADDONS -->
-<div id="addons" class="category">📦 Survival Addons</div>
-
-<div class="grid">
-
-<div class="card">
-<img src="Naturalist.png">
-<h3>Naturalist</h3>
-<p>Better wildlife and animals.</p>
-<a href="Naturalist.mcaddon" download>Download</a>
-</div>
-
-<div class="card">
-<img src="FURNICRAFT.png">
-<h3>Furnicraft</h3>
-<p>Furniture addon for survival worlds.</p>
-<a href="FURNICRAFT.mcpack" download>Download</a>
-</div>
-
-<div class="card">
-<img src="Backpacks.png">
-<h3>Backpacks</h3>
-<p>Extra inventory storage addon.</p>
-<a href="Backpacks.mcaddon" download>Download</a>
-</div>
-
-<div class="card">
-<img src="DynamicLightning.png">
-<h3>Dynamic Lightning</h3>
-<p>Enhanced lighting visuals.</p>
-<a href="DynamicLightning.mcaddon" download>Download</a>
-</div>
-
-</div>
-
-<!-- SURVIVAL HOUSES -->
-<div id="worlds" class="category">🏠 Survival Houses</div>
-
-<div class="grid">
-
-<div class="card">
-<img src="JungleSurvivalHouse.png">
-<h3>Jungle House</h3>
-<p>Starter jungle survival base.</p>
-<a href="JungleSurvivalHouse.mcworld" download>Download</a>
-</div>
-
-<div class="card">
-<img src="StarterHouseSurvival.png">
-<h3>Starter House</h3>
-<p>Simple survival starter home.</p>
-<a href="StarterHouseSurvival.mcworld" download>Download</a>
-</div>
-
-<div class="card">
-<img src="SpruceSurvivalHouse.png">
-<h3>Spruce House</h3>
-<p>Wood survival house build.</p>
-<a href="SpruceSurvivalHouse.mcworld" download>Download</a>
-</div>
-
-<div class="card">
-<img src="MedievalHouse.png">
-<h3>Medieval House</h3>
-<p>Large medieval survival base.</p>
-<a href="MedievalHouse.mcworld" download>Download</a>
-</div>
-
-</div>
-
-<div class="footer">
-v1.10 • Minecraft Bedrock 1.21+ • More packs coming soon 🚀
-</div>
+/* SEARCH */
+document.getElementById("search").addEventListener("input",e=>{
+let v=e.target.value.toLowerCase();
+document.querySelectorAll(".card").forEach(c=>{
+c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
+});
+});
+</script>
 
 </body>
 </html>
