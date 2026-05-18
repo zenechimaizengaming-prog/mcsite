@@ -90,7 +90,7 @@ padding-bottom:5px;
 <h1>🔥 MCPE Packs Hub</h1>
 </div>
 
-<!-- 🔄 AUTO UPDATE MESSAGE (ADDED) -->
+<!-- AUTO UPDATE INFO BANNER -->
 <div style="
 background:#1b5e20;
 margin:10px;
@@ -99,7 +99,7 @@ border-radius:10px;
 font-size:13px;
 text-align:center;
 ">
-🔄 This app is web-based and updates automatically.<br>
+🚀 This app is web-based and updates automatically.<br>
 No need to reinstall or update the app — all changes from GitHub appear instantly.
 </div>
 
@@ -119,40 +119,7 @@ No need to reinstall or update the app — all changes from GitHub appear instan
 <script>
 
 /* =======================
-   🔥 VERSION SYSTEM
-======================= */
-const CURRENT_VERSION = "1.11";
-
-async function checkUpdate(){
-try{
-const res = await fetch("./version.json?v=" + Date.now());
-const data = await res.json();
-
-if(data.version !== CURRENT_VERSION){
-showUpdatePopup(data.updateUrl, data.version);
-}
-}catch(e){
-console.log("Version check failed", e);
-}
-}
-
-function showUpdatePopup(url, version){
-
-document.body.innerHTML = `
-<div style="height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:#000;color:white;text-align:center;padding:20px;">
-<h1>🚨 Update Required</h1>
-<p>Version ${version} is required to continue</p>
-
-<button onclick="window.location.href='${url}'"
-style="padding:12px 20px;background:#00c853;border:none;color:white;margin-top:15px;border-radius:8px;">
-⬇ Download Update
-</button>
-</div>
-`;
-}
-
-/* =======================
-   🔥 FIREBASE INIT
+   FIREBASE INIT
 ======================= */
 const firebaseConfig = {
 apiKey: "AIzaSyAnAJG_TFMX3CbTbdo3MD3KHk8rK8TxIMY",
@@ -167,7 +134,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 /* =======================
-   PACK LIST
+   PACK LIST (MASTER)
 ======================= */
 const packs = [
 {id:"zenfps",name:"Zen FPS Pro",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
@@ -204,7 +171,7 @@ const packs = [
 ];
 
 /* =======================
-   COUNTER SYSTEM
+   FIREBASE COUNTER
 ======================= */
 function getCount(id,cb){
 db.collection("downloads").doc(id).get().then(doc=>{
@@ -223,7 +190,7 @@ if(el) el.innerText="Downloads: "+c;
 }
 
 /* =======================
-   DOWNLOAD FIXED
+   DOWNLOAD SYSTEM
 ======================= */
 function download(id,file){
 
@@ -237,12 +204,11 @@ updateCount(id,c+1);
 
 setTimeout(()=>{
 
-const url = "./"+file+"?v="+Date.now()+"&r="+Math.random();
+const url = "./"+file+"?v="+Date.now();
 
 const a=document.createElement("a");
 a.href=url;
 a.download=file;
-a.style.display="none";
 
 document.body.appendChild(a);
 a.click();
@@ -254,7 +220,7 @@ renderTop();
 }
 
 /* =======================
-   MAIN RENDER
+   RENDER PACKS
 ======================= */
 function render(){
 let app=document.getElementById("app");
@@ -289,7 +255,7 @@ app.innerHTML=html;
 }
 
 /* =======================
-   TOP RANKING
+   TOP DOWNLOADS
 ======================= */
 async function getTopPacks(){
 const snap=await db.collection("downloads").get();
@@ -322,7 +288,9 @@ html+=`</div>`;
 document.getElementById("top").innerHTML=html;
 }
 
-/* SEARCH */
+/* =======================
+   SEARCH
+======================= */
 document.getElementById("search").addEventListener("input",e=>{
 let v=e.target.value.toLowerCase();
 document.querySelectorAll(".card").forEach(c=>{
@@ -333,7 +301,6 @@ c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
 /* INIT */
 render();
 renderTop();
-checkUpdate();
 
 </script>
 
