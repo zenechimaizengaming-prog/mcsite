@@ -9,16 +9,30 @@
 body{
 margin:0;
 font-family:Arial;
-background:#0d0d0d;
+background:linear-gradient(180deg,#0d0d0d,#0a0a0a);
 color:white;
 }
 
+/* HEADER */
 .header{
 text-align:center;
-padding:20px;
-background:#111;
+padding:25px;
+background:linear-gradient(90deg,#00c853,#00b0ff);
+font-size:22px;
+font-weight:bold;
 }
 
+/* INFO BANNER */
+.info{
+margin:10px;
+padding:10px;
+background:#1b5e20;
+border-radius:10px;
+text-align:center;
+font-size:13px;
+}
+
+/* SEARCH */
 .search{
 text-align:center;
 padding:10px;
@@ -27,19 +41,44 @@ padding:10px;
 input{
 width:90%;
 max-width:400px;
-padding:10px;
-border-radius:10px;
+padding:12px;
+border-radius:12px;
 border:none;
 outline:none;
 }
 
+/* FILTERS */
+.filters{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:8px;
+padding:10px;
+}
+
+.filters button{
+padding:8px 12px;
+border:none;
+border-radius:20px;
+background:#1f1f1f;
+color:white;
+cursor:pointer;
+font-size:12px;
+}
+
+.filters button:hover{
+background:#00c853;
+}
+
+/* CATEGORY */
 .cat{
 padding:12px;
-font-size:20px;
+font-size:18px;
 color:#00e676;
 font-weight:bold;
 }
 
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
@@ -47,12 +86,18 @@ gap:10px;
 padding:10px;
 }
 
+/* CARD */
 .card{
 background:#1a1a1a;
-border-radius:10px;
+border-radius:12px;
 overflow:hidden;
 border:1px solid #333;
 text-align:center;
+transition:0.2s;
+}
+
+.card:hover{
+transform:scale(1.03);
 }
 
 .card img{
@@ -66,6 +111,7 @@ font-size:14px;
 margin:5px;
 }
 
+/* BUTTON */
 .card button{
 width:100%;
 padding:8px;
@@ -76,51 +122,57 @@ font-weight:bold;
 cursor:pointer;
 }
 
+/* COUNTER */
 .counter{
 font-size:12px;
 color:#aaa;
 padding-bottom:5px;
+}
+
+/* STARS */
+.stars span{
+color:#ffcc00;
+cursor:pointer;
+font-size:14px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">
-<h1>🔥 MCPE Packs Hub</h1>
-</div>
+<div class="header">🔥 MCPE Packs Hub</div>
 
-<!-- AUTO UPDATE INFO BANNER -->
-<div style="
-background:#1b5e20;
-margin:10px;
-padding:10px;
-border-radius:10px;
-font-size:13px;
-text-align:center;
-">
-🚀 This app is web-based and updates automatically.<br>
-No need to reinstall or update the app — all changes from GitHub appear instantly.
+<div class="info">
+🚀 Live Web App — updates automatically from GitHub<br>
+No reinstall needed. Everything updates instantly.
 </div>
 
 <div class="search">
 <input id="search" placeholder="Search packs...">
 </div>
 
-<div class="cat">🏆 Top Downloaded Packs</div>
+<div class="filters">
+<button onclick="filterCat('ALL')">ALL</button>
+<button onclick="filterCat('FPS')">FPS</button>
+<button onclick="filterCat('PvP')">PvP</button>
+<button onclick="filterCat('Shaders')">Shaders</button>
+<button onclick="filterCat('Survival')">Survival</button>
+<button onclick="filterCat('Houses')">Houses</button>
+<button onclick="filterCat('UI')">UI</button>
+</div>
+
+<div class="cat">🔥 Trending Packs</div>
 <div id="top"></div>
 
 <div id="app"></div>
 
-<!-- Firebase -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <script>
 
-/* =======================
-   FIREBASE INIT
-======================= */
+/* FIREBASE */
 const firebaseConfig = {
 apiKey: "AIzaSyAnAJG_TFMX3CbTbdo3MD3KHk8rK8TxIMY",
 authDomain: "mcpackss-62645.firebaseapp.com",
@@ -133,9 +185,7 @@ appId: "1:770814437665:web:bb3958093106809ed67660"
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-/* =======================
-   PACK LIST (MASTER)
-======================= */
+/* FULL PACKS (YOUR ORIGINAL LIST) */
 const packs = [
 {id:"zenfps",name:"Zen FPS Pro",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
 {id:"optifire",name:"Optifire",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},
@@ -170,46 +220,41 @@ const packs = [
 {id:"starter",name:"Starter House",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"}
 ];
 
-/* =======================
-   FIREBASE COUNTER
-======================= */
-function getCount(id,cb){
-db.collection("downloads").doc(id).get().then(doc=>{
-if(!doc.exists){
-db.collection("downloads").doc(id).set({count:0});
-cb(0);
-}else{
-cb(doc.data().count);
-}
-});
+/* FILTER */
+let currentFilter="ALL";
+function filterCat(cat){
+currentFilter=cat;
+render();
 }
 
-function updateCount(id,c){
-let el=document.getElementById("c_"+id);
-if(el) el.innerText="Downloads: "+c;
+/* DOWNLOAD ANTI-SPAM */
+function canDownload(id){
+let last=localStorage.getItem("dl_"+id);
+return !last || (Date.now()-last)>30000;
 }
 
-/* =======================
-   DOWNLOAD SYSTEM
-======================= */
+/* DOWNLOAD */
 function download(id,file){
+
+if(!canDownload(id)){
+alert("⏳ Wait before downloading again");
+return;
+}
+
+localStorage.setItem("dl_"+id,Date.now());
 
 const ref=db.collection("downloads").doc(id);
 
 ref.get().then(doc=>{
-let c = doc.exists ? doc.data().count : 0;
+let c=doc.exists?doc.data().count:0;
 ref.set({count:c+1});
-updateCount(id,c+1);
 });
 
 setTimeout(()=>{
 
-const url = "./"+file+"?v="+Date.now();
-
 const a=document.createElement("a");
-a.href=url;
+a.href="./"+file+"?v="+Date.now();
 a.download=file;
-
 document.body.appendChild(a);
 a.click();
 document.body.removeChild(a);
@@ -219,14 +264,14 @@ renderTop();
 },100);
 }
 
-/* =======================
-   RENDER PACKS
-======================= */
+/* RENDER */
 function render(){
 let app=document.getElementById("app");
 let grouped={};
 
 packs.forEach(p=>{
+if(currentFilter!="ALL" && p.cat!=currentFilter) return;
+
 if(!grouped[p.cat]) grouped[p.cat]=[];
 grouped[p.cat].push(p);
 });
@@ -241,7 +286,17 @@ html+=`
 <div class="card">
 <img src="${p.img}">
 <h3>${p.name}</h3>
+
+<div class="stars">
+<span onclick="rate('${p.id}',1)">★</span>
+<span onclick="rate('${p.id}',2)">★</span>
+<span onclick="rate('${p.id}',3)">★</span>
+<span onclick="rate('${p.id}',4)">★</span>
+<span onclick="rate('${p.id}',5)">★</span>
+</div>
+
 <div class="counter" id="c_${p.id}">Loading...</div>
+
 <button onclick="download('${p.id}','${p.file}')">Download</button>
 </div>`;
 
@@ -254,43 +309,52 @@ html+="</div>";
 app.innerHTML=html;
 }
 
-/* =======================
-   TOP DOWNLOADS
-======================= */
-async function getTopPacks(){
+/* COUNTER */
+function getCount(id,cb){
+db.collection("downloads").doc(id).get().then(doc=>{
+if(!doc.exists){
+db.collection("downloads").doc(id).set({count:0});
+cb(0);
+}else cb(doc.data().count);
+});
+}
+
+function updateCount(id,c){
+let el=document.getElementById("c_"+id);
+if(el) el.innerText="Downloads: "+c;
+}
+
+/* TRENDING */
+async function getTop(){
 const snap=await db.collection("downloads").get();
 let list=[];
-snap.forEach(doc=>{
-list.push({id:doc.id,count:doc.data().count||0});
-});
+snap.forEach(d=>list.push({id:d.id,count:d.data().count||0}));
 list.sort((a,b)=>b.count-a.count);
 return list;
 }
 
 async function renderTop(){
-const top=await getTopPacks();
-let html=`<div class="grid">`;
+const top=await getTop();
+let html="<div class='grid'>";
 
 top.slice(0,5).forEach(t=>{
-let pack=packs.find(p=>p.id===t.id);
-if(!pack)return;
+let p=packs.find(x=>x.id===t.id);
+if(!p)return;
 
 html+=`
 <div class="card">
-<img src="${pack.img}">
-<h3>${pack.name}</h3>
-<div class="counter">🔥 ${t.count} downloads</div>
-<button onclick="download('${pack.id}','${pack.file}')">Download</button>
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<div class="counter">🔥 ${t.count}</div>
+<button onclick="download('${p.id}','${p.file}')">Download</button>
 </div>`;
 });
 
-html+=`</div>`;
+html+="</div>";
 document.getElementById("top").innerHTML=html;
 }
 
-/* =======================
-   SEARCH
-======================= */
+/* SEARCH */
 document.getElementById("search").addEventListener("input",e=>{
 let v=e.target.value.toLowerCase();
 document.querySelectorAll(".card").forEach(c=>{
