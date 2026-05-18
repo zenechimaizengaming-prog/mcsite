@@ -180,7 +180,6 @@ No reinstall needed. Everything updates instantly.
 
 <script>
 
-/* FIREBASE */
 const firebaseConfig = {
 apiKey: "AIzaSyAnAJG_TFMX3CbTbdo3MD3KHk8rK8TxIMY",
 authDomain: "mcpackss-62645.firebaseapp.com",
@@ -202,61 +201,59 @@ const packs = [
 
 {id:"sodiumx",name:"Sodium X",desc:"Lightweight FPS pack for stable gameplay experience.",file:"SodiumX.mcpack",img:"SodiumX.png",cat:"FPS"},
 
-{id:"asteroid",name:"Asteroid Client",desc:"Client-style pack with FPS boosts and utilities.",file:"AsteroidClient.mcpack",img:"AsteroidClient.png",cat:"FPS"},
-
+{id:"asteroid",name:"Asteroid Client",desc:"Client-style FPS booster pack.",file:"AsteroidClient.mcpack",img:"AsteroidClient.png",cat:"FPS"},
 
 
 {id:"zenpvp",name:"Zen PvP Pack",desc:"Clean PvP textures with better combat visibility.",file:"ZenPVPPack.mcpack",img:"ZenPVPPack.png",cat:"PvP"},
 
-{id:"venom",name:"Venom PvP",desc:"Dark-themed PvP pack with stylish combat textures.",file:"VenomPVP.mcpack",img:"VenomPVP.png",cat:"PvP"},
+{id:"venom",name:"Venom PvP",desc:"Dark PvP pack with smooth combat visuals.",file:"VenomPVP.mcpack",img:"VenomPVP.png",cat:"PvP"},
 
-{id:"lyro",name:"Lyro PvP Ultimate",desc:"Smooth PvP pack designed for competitive gameplay.",file:"LyroPVPUltimate.mcpack",img:"LyroPVPUltimate.png",cat:"PvP"},
+{id:"lyro",name:"Lyro PvP Ultimate",desc:"Competitive PvP texture pack.",file:"LyroPVPUltimate.mcpack",img:"LyroPVPUltimate.png",cat:"PvP"},
 
-{id:"zenutil",name:"Zen Utility HUD",desc:"Useful HUD improvements and PvP enhancements.",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP"},
-
-
-
-{id:"actions",name:"Actions & Stuff",desc:"Adds immersive animations and gameplay actions.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Actions"},
+{id:"zenutil",name:"Zen Utility HUD",desc:"Improved HUD and combat UI tools.",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP"},
 
 
-
-{id:"bedrockui",name:"Bedrock UI",desc:"Modern Bedrock-inspired user interface redesign.",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI"},
-
-{id:"vdx",name:"VDX Desktop UI",desc:"Desktop-style Minecraft UI with clean layout.",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI"},
-
-{id:"deesse",name:"Déesse UI",desc:"Elegant UI pack with stylish transparent menus.",file:"DéesseUI.mcpack",img:"DéesseUI.png",cat:"UI"},
-
-{id:"ultra",name:"Ultramarine Nightfall",desc:"Dark futuristic UI theme for Minecraft Bedrock.",file:"Ultramarine_Nightfall.mcpack",img:"Ultramarine_Nightfall.png",cat:"UI"},
+{id:"actions",name:"Actions & Stuff",desc:"Adds animations and gameplay effects.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Actions"},
 
 
+{id:"bedrockui",name:"Bedrock UI",desc:"Clean modern Bedrock interface.",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI"},
 
-{id:"yummy",name:"Yummysheep Shader",desc:"Realistic shader with beautiful lighting effects.",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders"},
+{id:"vdx",name:"VDX Desktop UI",desc:"Desktop style UI for Minecraft.",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI"},
 
-{id:"newb",name:"NewbX Legacy",desc:"Popular shader pack with enhanced world visuals.",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders"},
+{id:"deesse",name:"Déesse UI",desc:"Elegant transparent UI theme.",file:"DéesseUI.mcpack",img:"DéesseUI.png",cat:"UI"},
 
-{id:"nr",name:"NR Shader",desc:"Balanced shader with smooth shadows and lighting.",file:"NRShader.mcpack",img:"NRShader.png",cat:"Shaders"},
-
-{id:"rg",name:"RG Shader",desc:"Enhanced graphics shader for vibrant environments.",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders"},
-
+{id:"ultra",name:"Ultramarine Nightfall",desc:"Dark futuristic UI theme.",file:"Ultramarine_Nightfall.mcpack",img:"Ultramarine_Nightfall.png",cat:"UI"},
 
 
-{id:"backpacks",name:"Backpacks",desc:"Adds wearable backpacks for extra inventory space.",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival"},
+{id:"yummy",name:"Yummysheep Shader",desc:"Realistic lighting shader pack.",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders"},
 
-{id:"dynamic",name:"Dynamic Lightning",desc:"Dynamic lighting effects for immersive survival.",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival"},
+{id:"newb",name:"NewbX Legacy",desc:"Popular enhanced visuals shader.",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders"},
 
-{id:"furni",name:"Furnicraft",desc:"Furniture addon with decorations and utilities.",file:"FURNICRAFT.mcpack",img:"FURNICRAFT.png",cat:"Survival"},
+{id:"nr",name:"NR Shader",desc:"Balanced smooth lighting shader.",file:"NRShader.mcpack",img:"NRShader.png",cat:"Shaders"},
 
-{id:"naturalist",name:"Naturalist",desc:"Adds realistic animals and nature to Minecraft.",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival"},
+{id:"rg",name:"RG Shader",desc:"Bright vibrant graphics shader.",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders"},
 
 
+{id:"backpacks",name:"Backpacks",desc:"Extra inventory backpacks addon.",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival"},
 
-{id:"jungle",name:"Jungle House",desc:"Starter jungle survival house world for adventures.",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses"},
+{id:"dynamic",name:"Dynamic Lightning",desc:"Realistic lighting effects.",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival"},
 
-{id:"medieval",name:"Medieval House",desc:"Beautiful medieval-themed survival house build.",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses"},
+{id:"furni",name:"Furnicraft",desc:"Furniture addon for survival.",file:"FURNICRAFT.mcpack",img:"FURNICRAFT.png",cat:"Survival"},
 
-{id:"spruce",name:"Spruce House",desc:"Cozy spruce survival house with detailed design.",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses"},
+{id:"naturalist",name:"Naturalist",desc:"Adds animals and nature realism.",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival"},
 
-{id:"starter",name:"Starter House",desc:"Simple starter survival house for new players.",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"}
+
+{id:"jungle",name:"Jungle House",desc:"Survival jungle house world.",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses"},
+
+{id:"medieval",name:"Medieval House",desc:"Medieval survival house build.",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses"},
+
+{id:"spruce",name:"Spruce House",desc:"Cozy survival house design.",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses"},
+
+{id:"starter",name:"Starter House",desc:"Beginner survival house world.",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"},
+
+
+/* NEW PACK */
+{id:"hotbar",name:"Hotbar Slot Button",desc:"Improves hotbar buttons for easier mobile control.",file:"HotbarSlotButton.mcpack",img:"HotbarSlotButton.png",cat:"UI"}
 
 ];
 
@@ -268,21 +265,8 @@ currentFilter=cat;
 render();
 }
 
-/* DOWNLOAD ANTI-SPAM */
-function canDownload(id){
-let last=localStorage.getItem("dl_"+id);
-return !last || (Date.now()-last)>30000;
-}
-
 /* DOWNLOAD */
 function download(id,file){
-
-if(!canDownload(id)){
-alert("⏳ Wait before downloading again");
-return;
-}
-
-localStorage.setItem("dl_"+id,Date.now());
 
 const ref=db.collection("downloads").doc(id);
 
@@ -304,15 +288,6 @@ document.body.removeChild(a);
 renderTop();
 
 },100);
-}
-
-/* RATING */
-function rate(id,stars){
-
-localStorage.setItem("rating_"+id,stars);
-
-alert("⭐ Rated "+stars+" stars");
-
 }
 
 /* RENDER */
@@ -363,8 +338,6 @@ html+=`
 </div>
 `;
 
-getCount(p.id,c=>updateCount(p.id,c));
-
 });
 
 html+="</div>";
@@ -375,103 +348,53 @@ app.innerHTML=html;
 
 }
 
-/* COUNTER */
-function getCount(id,cb){
-
-db.collection("downloads").doc(id).get().then(doc=>{
-
-if(!doc.exists){
-
-db.collection("downloads").doc(id).set({count:0});
-
-cb(0);
-
-}else{
-
-cb(doc.data().count);
-
-}
-
-});
-
-}
-
-function updateCount(id,c){
-
-let el=document.getElementById("c_"+id);
-
-if(el) el.innerText="Downloads: "+c;
-
-}
-
 /* TRENDING */
 async function getTop(){
-
 const snap=await db.collection("downloads").get();
-
 let list=[];
-
-snap.forEach(d=>list.push({
-id:d.id,
-count:d.data().count||0
-}));
-
+snap.forEach(d=>list.push({id:d.id,count:d.data().count||0}));
 list.sort((a,b)=>b.count-a.count);
-
 return list;
-
 }
 
 async function renderTop(){
-
 const top=await getTop();
 
 let html="<div class='grid'>";
 
 top.slice(0,5).forEach(t=>{
-
 let p=packs.find(x=>x.id===t.id);
-
 if(!p)return;
 
 html+=`
 <div class="card">
-
 <img src="${p.img}">
-
 <h3>${p.name}</h3>
-
 <p class="desc">${p.desc}</p>
-
 <div class="counter">🔥 ${t.count}</div>
-
 <button onclick="download('${p.id}','${p.file}')">Download</button>
-
 </div>
 `;
-
 });
 
 html+="</div>";
 
 document.getElementById("top").innerHTML=html;
-
 }
 
 /* SEARCH */
 document.getElementById("search").addEventListener("input",e=>{
-
 let v=e.target.value.toLowerCase();
-
 document.querySelectorAll(".card").forEach(c=>{
-
-c.style.display=c.innerText.toLowerCase().includes(v)
-? "block"
-: "none";
-
+c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
+});
 });
 
-});
+/* RATING */
+function rate(id,stars){
+localStorage.setItem("rating_"+id,stars);
+alert("⭐ Rated "+stars+" stars");
+}
 
 /* INIT */
 render();
