@@ -13,7 +13,6 @@ background:linear-gradient(180deg,#0d0d0d,#0a0a0a);
 color:white;
 }
 
-/* HEADER */
 .header{
 text-align:center;
 padding:25px;
@@ -22,7 +21,6 @@ font-size:22px;
 font-weight:bold;
 }
 
-/* INFO */
 .info{
 margin:10px;
 padding:10px;
@@ -32,7 +30,6 @@ text-align:center;
 font-size:13px;
 }
 
-/* SEARCH */
 .search{
 text-align:center;
 padding:10px;
@@ -47,7 +44,6 @@ border:none;
 outline:none;
 }
 
-/* FILTERS */
 .filters{
 display:flex;
 flex-wrap:wrap;
@@ -70,7 +66,6 @@ font-size:12px;
 background:#00c853;
 }
 
-/* CATEGORY */
 .cat{
 padding:12px;
 font-size:18px;
@@ -78,7 +73,6 @@ color:#00e676;
 font-weight:bold;
 }
 
-/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
@@ -86,18 +80,13 @@ gap:10px;
 padding:10px;
 }
 
-/* CARD */
 .card{
 background:#1a1a1a;
 border-radius:12px;
 overflow:hidden;
 border:1px solid #333;
 text-align:center;
-transition:0.2s;
-}
-
-.card:hover{
-transform:scale(1.03);
+position:relative;
 }
 
 .card img{
@@ -118,7 +107,6 @@ padding:0 8px 8px;
 min-height:38px;
 }
 
-/* BUTTON */
 .card button{
 width:100%;
 padding:8px;
@@ -129,18 +117,23 @@ font-weight:bold;
 cursor:pointer;
 }
 
-/* COUNTER */
 .counter{
 font-size:12px;
 color:#aaa;
 padding-bottom:5px;
 }
 
-/* STARS */
-.stars span{
-color:#ffcc00;
-cursor:pointer;
-font-size:14px;
+/* NEW BADGE */
+.badge{
+position:absolute;
+top:8px;
+left:8px;
+background:#ff3d00;
+color:white;
+font-size:10px;
+padding:4px 6px;
+border-radius:6px;
+font-weight:bold;
 }
 </style>
 </head>
@@ -174,7 +167,6 @@ No reinstall needed. Everything updates instantly.
 
 <div id="app"></div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
@@ -192,193 +184,137 @@ appId: "1:770814437665:web:bb3958093106809ed67660"
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-/* PACKS */
+/* ================= FULL PACK LIST ================= */
 const packs = [
+{id:"zenfps",name:"Zen FPS Pro",desc:"Boost FPS and reduce lag.",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
+{id:"optifire",name:"Optifire",desc:"Optimized visuals.",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},
+{id:"sodiumx",name:"Sodium X",desc:"Stable FPS pack.",file:"SodiumX.mcpack",img:"SodiumX.png",cat:"FPS"},
+{id:"asteroid",name:"Asteroid Client",desc:"FPS utilities pack.",file:"AsteroidClient.mcpack",img:"AsteroidClient.png",cat:"FPS"},
 
-{id:"zenfps",name:"Zen FPS Pro",desc:"Boost FPS and reduce lag for smoother gameplay.",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
+{id:"zenpvp",name:"Zen PvP Pack",desc:"Clean PvP textures.",file:"ZenPVPPack.mcpack",img:"ZenPVPPack.png",cat:"PvP"},
+{id:"venom",name:"Venom PvP",desc:"Dark PvP style.",file:"VenomPVP.mcpack",img:"VenomPVP.png",cat:"PvP"},
+{id:"lyro",name:"Lyro PvP Ultimate",desc:"Competitive PvP pack.",file:"LyroPVPUltimate.mcpack",img:"LyroPVPUltimate.png",cat:"PvP"},
+{id:"zenutil",name:"Zen Utility HUD",desc:"Improved HUD tools.",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP"},
 
-{id:"optifire",name:"Optifire",desc:"Optimized visuals and smoother Minecraft performance.",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},
+{id:"actions",name:"Actions & Stuff",desc:"Animations & effects.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Actions"},
 
-{id:"sodiumx",name:"Sodium X",desc:"Lightweight FPS pack for stable gameplay experience.",file:"SodiumX.mcpack",img:"SodiumX.png",cat:"FPS"},
+/* UI CATEGORY (INCLUDING HOTBAR SLOT BUTTON) */
+{id:"bedrockui",name:"Bedrock UI",desc:"Clean interface.",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI"},
+{id:"vdx",name:"VDX Desktop UI",desc:"Desktop UI style.",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI"},
+{id:"deesse",name:"Déesse UI",desc:"Elegant UI theme.",file:"DéesseUI.mcpack",img:"DéesseUI.png",cat:"UI"},
+{id:"ultra",name:"Ultramarine Nightfall",desc:"Dark UI theme.",file:"Ultramarine_Nightfall.mcpack",img:"Ultramarine_Nightfall.png",cat:"UI"},
 
-{id:"asteroid",name:"Asteroid Client",desc:"Client-style FPS booster pack.",file:"AsteroidClient.mcpack",img:"AsteroidClient.png",cat:"FPS"},
+/* ✔ HOTBAR SLOT BUTTON IS HERE */
+{id:"hotbar",name:"Hotbar Slot Button",desc:"Better mobile hotbar controls.",file:"HotbarSlotButton.mcpack",img:"HotbarSlotButton.png",cat:"UI",badge:"NEW"},
 
+{id:"yummy",name:"Yummysheep Shader",desc:"Realistic lighting.",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders"},
+{id:"newb",name:"NewbX Legacy",desc:"Enhanced visuals shader.",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders"},
+{id:"nr",name:"NR Shader",desc:"Smooth lighting shader.",file:"NRShader.mcpack",img:"NRShader.png",cat:"Shaders"},
+{id:"rg",name:"RG Shader",desc:"Vibrant shader pack.",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders"},
 
-{id:"zenpvp",name:"Zen PvP Pack",desc:"Clean PvP textures with better combat visibility.",file:"ZenPVPPack.mcpack",img:"ZenPVPPack.png",cat:"PvP"},
+{id:"backpacks",name:"Backpacks",desc:"Extra inventory addon.",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival"},
+{id:"dynamic",name:"Dynamic Lightning",desc:"Lighting effects addon.",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival"},
+{id:"furni",name:"Furnicraft",desc:"Furniture addon.",file:"FURNICRAFT.mcpack",img:"FURNICRAFT.png",cat:"Survival"},
+{id:"naturalist",name:"Naturalist",desc:"Animals & nature addon.",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival"},
 
-{id:"venom",name:"Venom PvP",desc:"Dark PvP pack with smooth combat visuals.",file:"VenomPVP.mcpack",img:"VenomPVP.png",cat:"PvP"},
-
-{id:"lyro",name:"Lyro PvP Ultimate",desc:"Competitive PvP texture pack.",file:"LyroPVPUltimate.mcpack",img:"LyroPVPUltimate.png",cat:"PvP"},
-
-{id:"zenutil",name:"Zen Utility HUD",desc:"Improved HUD and combat UI tools.",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP"},
-
-
-{id:"actions",name:"Actions & Stuff",desc:"Adds animations and gameplay effects.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Actions"},
-
-
-{id:"bedrockui",name:"Bedrock UI",desc:"Clean modern Bedrock interface.",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI"},
-
-{id:"vdx",name:"VDX Desktop UI",desc:"Desktop style UI for Minecraft.",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI"},
-
-{id:"deesse",name:"Déesse UI",desc:"Elegant transparent UI theme.",file:"DéesseUI.mcpack",img:"DéesseUI.png",cat:"UI"},
-
-{id:"ultra",name:"Ultramarine Nightfall",desc:"Dark futuristic UI theme.",file:"Ultramarine_Nightfall.mcpack",img:"Ultramarine_Nightfall.png",cat:"UI"},
-
-
-{id:"yummy",name:"Yummysheep Shader",desc:"Realistic lighting shader pack.",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders"},
-
-{id:"newb",name:"NewbX Legacy",desc:"Popular enhanced visuals shader.",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders"},
-
-{id:"nr",name:"NR Shader",desc:"Balanced smooth lighting shader.",file:"NRShader.mcpack",img:"NRShader.png",cat:"Shaders"},
-
-{id:"rg",name:"RG Shader",desc:"Bright vibrant graphics shader.",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders"},
-
-
-{id:"backpacks",name:"Backpacks",desc:"Extra inventory backpacks addon.",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival"},
-
-{id:"dynamic",name:"Dynamic Lightning",desc:"Realistic lighting effects.",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival"},
-
-{id:"furni",name:"Furnicraft",desc:"Furniture addon for survival.",file:"FURNICRAFT.mcpack",img:"FURNICRAFT.png",cat:"Survival"},
-
-{id:"naturalist",name:"Naturalist",desc:"Adds animals and nature realism.",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival"},
-
-
-{id:"jungle",name:"Jungle House",desc:"Survival jungle house world.",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses"},
-
-{id:"medieval",name:"Medieval House",desc:"Medieval survival house build.",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses"},
-
-{id:"spruce",name:"Spruce House",desc:"Cozy survival house design.",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses"},
-
-{id:"starter",name:"Starter House",desc:"Beginner survival house world.",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"},
-
-
-/* NEW PACK */
-{id:"hotbar",name:"Hotbar Slot Button",desc:"Improves hotbar buttons for easier mobile control.",file:"HotbarSlotButton.mcpack",img:"HotbarSlotButton.png",cat:"UI"}
-
+{id:"jungle",name:"Jungle House",desc:"Survival house world.",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses"},
+{id:"medieval",name:"Medieval House",desc:"Medieval build world.",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses"},
+{id:"spruce",name:"Spruce House",desc:"Cozy survival house.",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses"},
+{id:"starter",name:"Starter House",desc:"Beginner house world.",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"}
 ];
 
 /* FILTER */
 let currentFilter="ALL";
+function filterCat(c){currentFilter=c;render();}
 
-function filterCat(cat){
-currentFilter=cat;
-render();
+/* COUNTS */
+let counts={};
+
+async function loadCounts(){
+const snap=await db.collection("downloads").get();
+snap.forEach(d=>counts[d.id]=d.data().count||0);
 }
 
 /* DOWNLOAD */
 function download(id,file){
-
-const ref=db.collection("downloads").doc(id);
-
-ref.get().then(doc=>{
-let c=doc.exists?doc.data().count:0;
-ref.set({count:c+1});
-});
+counts[id]=(counts[id]||0)+1;
+db.collection("downloads").doc(id).set({count:counts[id]});
 
 setTimeout(()=>{
-
 const a=document.createElement("a");
 a.href="./"+file+"?v="+Date.now();
 a.download=file;
-
 document.body.appendChild(a);
 a.click();
 document.body.removeChild(a);
-
 renderTop();
-
 },100);
 }
 
 /* RENDER */
 function render(){
-
 let app=document.getElementById("app");
 let grouped={};
 
 packs.forEach(p=>{
-
 if(currentFilter!="ALL" && p.cat!=currentFilter) return;
-
 if(!grouped[p.cat]) grouped[p.cat]=[];
-
 grouped[p.cat].push(p);
-
 });
 
 let html="";
 
 for(let cat in grouped){
-
 html+=`<div class="cat">${cat}</div><div class="grid">`;
 
 grouped[cat].forEach(p=>{
-
 html+=`
 <div class="card">
 
+${p.badge?`<div class="badge">${p.badge}</div>`:""}
+
 <img src="${p.img}">
-
 <h3>${p.name}</h3>
-
 <p class="desc">${p.desc}</p>
-
-<div class="stars">
-<span onclick="rate('${p.id}',1)">★</span>
-<span onclick="rate('${p.id}',2)">★</span>
-<span onclick="rate('${p.id}',3)">★</span>
-<span onclick="rate('${p.id}',4)">★</span>
-<span onclick="rate('${p.id}',5)">★</span>
-</div>
-
-<div class="counter" id="c_${p.id}">Loading...</div>
-
+<div class="counter">🔥 ${counts[p.id]||0} downloads</div>
 <button onclick="download('${p.id}','${p.file}')">Download</button>
 
-</div>
-`;
-
+</div>`;
 });
 
 html+="</div>";
-
 }
 
 app.innerHTML=html;
-
 }
 
 /* TRENDING */
-async function getTop(){
-const snap=await db.collection("downloads").get();
-let list=[];
-snap.forEach(d=>list.push({id:d.id,count:d.data().count||0}));
-list.sort((a,b)=>b.count-a.count);
-return list;
-}
-
-async function renderTop(){
-const top=await getTop();
+function renderTop(){
+let top=Object.entries(counts)
+.sort((a,b)=>b[1]-a[1])
+.slice(0,5);
 
 let html="<div class='grid'>";
 
-top.slice(0,5).forEach(t=>{
-let p=packs.find(x=>x.id===t.id);
+top.forEach(([id,c])=>{
+let p=packs.find(x=>x.id===id);
 if(!p)return;
 
 html+=`
 <div class="card">
+
+${p.badge?`<div class="badge">${p.badge}</div>`:""}
+
 <img src="${p.img}">
 <h3>${p.name}</h3>
 <p class="desc">${p.desc}</p>
-<div class="counter">🔥 ${t.count}</div>
+<div class="counter">🔥 ${c}</div>
 <button onclick="download('${p.id}','${p.file}')">Download</button>
-</div>
-`;
+
+</div>`;
 });
 
 html+="</div>";
-
 document.getElementById("top").innerHTML=html;
 }
 
@@ -390,15 +326,13 @@ c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
 });
 });
 
-/* RATING */
-function rate(id,stars){
-localStorage.setItem("rating_"+id,stars);
-alert("⭐ Rated "+stars+" stars");
-}
-
 /* INIT */
+async function init(){
+await loadCounts();
 render();
 renderTop();
+}
+init();
 
 </script>
 
