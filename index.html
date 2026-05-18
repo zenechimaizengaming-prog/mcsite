@@ -123,13 +123,13 @@ font-weight:bold;
 cursor:pointer;
 }
 
-.badge{
+.rank{
 position:absolute;
 top:8px;
 left:8px;
-background:#ff3d00;
-color:white;
-font-size:10px;
+background:gold;
+color:black;
+font-size:11px;
 padding:4px 6px;
 border-radius:6px;
 font-weight:bold;
@@ -143,7 +143,7 @@ font-weight:bold;
 
 <div class="info">
 🚀 Live Web App — updates automatically from GitHub<br>
-No reinstall needed. Everything updates instantly.
+Real-time ranking system enabled ⚡
 </div>
 
 <div class="search">
@@ -161,7 +161,7 @@ No reinstall needed. Everything updates instantly.
 <button onclick="filterCat('Actions')">Actions</button>
 </div>
 
-<div class="cat">🔥 Trending Packs</div>
+<div class="cat">🏆 Live Most Downloaded Ranking</div>
 <div id="top"></div>
 
 <div id="app"></div>
@@ -183,41 +183,59 @@ appId: "1:770814437665:web:bb3958093106809ed67660"
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-/* ================= PACK LIST ================= */
+/* ================= PACKS (ONLY DESC IMPROVED) ================= */
 const packs = [
-{id:"zenfps",name:"Zen FPS Pro",desc:"Boost FPS and reduce lag spikes for smoother Minecraft gameplay and better performance stability.",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS",added:1710000000000},
-{id:"optifire",name:"Optifire",desc:"Improves visual clarity and optimizes performance for smoother gameplay on low and mid devices.",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS",added:1710000000000},
-{id:"sodiumx",name:"Sodium X",desc:"Lightweight optimization pack that improves rendering efficiency and reduces lag during gameplay.",file:"SodiumX.mcpack",img:"SodiumX.png",cat:"FPS",added:1710000000000},
-{id:"asteroid",name:"Asteroid Client",desc:"Performance utility pack designed to enhance responsiveness and overall Minecraft stability.",file:"AsteroidClient.mcpack",img:"AsteroidClient.png",cat:"FPS",added:1710000000000},
+{id:"zenfps",name:"Zen FPS Pro",desc:"A high-performance optimization pack designed to significantly improve FPS stability, reduce lag spikes, and enhance overall gameplay smoothness for a more consistent Minecraft Bedrock experience.",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
 
-{id:"zenpvp",name:"Zen PvP Pack",desc:"Clean PvP textures designed for better visibility, faster reaction time, and competitive advantage.",file:"ZenPVPPack.mcpack",img:"ZenPVPPack.png",cat:"PvP",added:1710000000000},
-{id:"venom",name:"Venom PvP",desc:"Dark themed PvP pack that enhances contrast and enemy visibility during combat.",file:"VenomPVP.mcpack",img:"VenomPVP.png",cat:"PvP",added:1710000000000},
-{id:"lyro",name:"Lyro PvP Ultimate",desc:"Competitive PvP pack built for clarity, hit detection visibility, and smooth combat experience.",file:"LyroPVPUltimate.mcpack",img:"LyroPVPUltimate.png",cat:"PvP",added:1710000000000},
-{id:"zenutil",name:"Zen Utility HUD",desc:"Improved HUD system that enhances player awareness and simplifies interface layout.",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP",added:1710000000000},
+{id:"optifire",name:"Optifire",desc:"An advanced performance and visual optimization pack that balances smooth frame rates with improved graphical clarity for a more stable gameplay experience.",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},
 
-{id:"actions",name:"Actions & Stuff",desc:"Adds smooth animations and enhanced visual effects for more dynamic gameplay experience.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Actions",added:1710000000000},
+{id:"sodiumx",name:"Sodium X",desc:"A lightweight performance enhancement pack focused on improving rendering efficiency, reducing stutters, and increasing overall game responsiveness.",file:"SodiumX.mcpack",img:"SodiumX.png",cat:"FPS"},
 
-{id:"bedrockui",name:"Bedrock UI",desc:"Modern Minecraft interface redesign with improved layout, readability, and navigation.",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI",added:1710000000000},
-{id:"vdx",name:"VDX Desktop UI",desc:"PC-style interface bringing desktop-like experience to Minecraft Bedrock mobile.",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI",added:1710000000000},
-{id:"deesse",name:"Déesse UI",desc:"Elegant UI theme with smooth visuals and modern design aesthetics.",file:"DéesseUI.mcpack",img:"DéesseUI.png",cat:"UI",added:1710000000000},
-{id:"ultra",name:"Ultramarine Nightfall",desc:"Dark immersive UI theme designed for stylish and focused gameplay.",file:"Ultramarine_Nightfall.mcpack",img:"Ultramarine_Nightfall.png",cat:"UI",added:1710000000000},
+{id:"asteroid",name:"Asteroid Client",desc:"A utility performance pack designed to improve input responsiveness, reduce lag, and enhance gameplay stability across all devices.",file:"AsteroidClient.mcpack",img:"AsteroidClient.png",cat:"FPS"},
 
-{id:"hotbar",name:"Hotbar Slot Button",desc:"Improves mobile hotbar controls for faster and smoother slot switching experience.",file:"HotbarSlotButton.mcpack",img:"HotbarSlotButton.png",cat:"UI",added:Date.now()},
+{id:"zenpvp",name:"Zen PvP Pack",desc:"A competitive PvP texture pack designed for clearer visuals, improved enemy detection, and reduced distractions during combat.",file:"ZenPVPPack.mcpack",img:"ZenPVPPack.png",cat:"PvP"},
 
-{id:"yummy",name:"Yummysheep Shader",desc:"Realistic shader improving lighting, shadows, and water effects for immersive visuals.",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders",added:1710000000000},
-{id:"newb",name:"NewbX Legacy",desc:"Balanced shader combining performance optimization with enhanced world visuals.",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders",added:1710000000000},
-{id:"nr",name:"NR Shader",desc:"Smooth lighting shader enhancing colors, shadows, and world atmosphere.",file:"NRShader.mcpack",img:"NRShader.png",cat:"Shaders",added:1710000000000},
-{id:"rg",name:"RG Shader",desc:"Vibrant shader pack increasing color intensity and visual realism.",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders",added:1710000000000},
+{id:"venom",name:"Venom PvP",desc:"A dark-themed PvP pack that enhances contrast and improves enemy visibility for more focused combat performance.",file:"VenomPVP.mcpack",img:"VenomPVP.png",cat:"PvP"},
 
-{id:"backpacks",name:"Backpacks",desc:"Adds portable storage backpacks for expanded inventory in survival gameplay.",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival",added:1710000000000},
-{id:"dynamic",name:"Dynamic Lightning",desc:"Enhances environmental lighting for more realistic survival atmosphere.",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival",added:1710000000000},
-{id:"furni",name:"Furnicraft",desc:"Furniture addon adding decorative and usable items for creative building.",file:"FURNICRAFT.mcpack",img:"FURNICRAFT.png",cat:"Survival",added:1710000000000},
-{id:"naturalist",name:"Naturalist",desc:"Adds wildlife and natural ecosystem features for a more alive Minecraft world.",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival",added:1710000000000},
+{id:"lyro",name:"Lyro PvP Ultimate",desc:"A premium PvP pack designed to improve reaction timing, visual clarity, and overall competitive gameplay performance.",file:"LyroPVPUltimate.mcpack",img:"LyroPVPUltimate.png",cat:"PvP"},
 
-{id:"jungle",name:"Jungle House",desc:"Survival world featuring a detailed jungle house for exploration gameplay.",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses",added:1710000000000},
-{id:"medieval",name:"Medieval House",desc:"Beautiful medieval survival house world with detailed architecture.",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses",added:1710000000000},
-{id:"spruce",name:"Spruce House",desc:"Cozy survival house located in a peaceful spruce forest environment.",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses",added:1710000000000},
-{id:"starter",name:"Starter House",desc:"Beginner friendly survival house designed for early game players.",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses",added:1710000000000}
+{id:"zenutil",name:"Zen Utility HUD",desc:"A refined HUD system that enhances player awareness and simplifies interface design for better combat efficiency.",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP"},
+
+{id:"actions",name:"Actions & Stuff",desc:"A visual enhancement pack that improves animations, movement transitions, and overall gameplay immersion.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Actions"},
+
+{id:"bedrockui",name:"Bedrock UI",desc:"A modern UI redesign that improves navigation, readability, and overall interface usability in Minecraft Bedrock.",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI"},
+
+{id:"vdx",name:"VDX Desktop UI",desc:"A desktop-inspired UI pack that transforms mobile Minecraft into a clean PC-style interface experience.",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI"},
+
+{id:"deesse",name:"Déesse UI",desc:"An elegant UI theme designed with smooth visuals, modern layout structure, and improved readability.",file:"DéesseUI.mcpack",img:"DéesseUI.png",cat:"UI"},
+
+{id:"ultra",name:"Ultramarine Nightfall",desc:"A dark immersive UI theme designed to reduce eye strain while providing a stylish interface experience.",file:"Ultramarine_Nightfall.mcpack",img:"Ultramarine_Nightfall.png",cat:"UI"},
+
+{id:"hotbar",name:"Hotbar Slot Button",desc:"An enhanced control pack that improves hotbar responsiveness and makes slot switching faster and smoother.",file:"HotbarSlotButton.mcpack",img:"HotbarSlotButton.png",cat:"UI"},
+
+{id:"yummy",name:"Yummysheep Shader",desc:"A realistic shader pack that enhances lighting, shadows, reflections, and water effects for immersive visuals.",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders"},
+
+{id:"newb",name:"NewbX Legacy",desc:"A balanced shader that improves world visuals while maintaining smooth performance across devices.",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders"},
+
+{id:"nr",name:"NR Shader",desc:"A smooth lighting shader that enhances color tone, shadow quality, and environmental atmosphere.",file:"NRShader.mcpack",img:"NRShader.png",cat:"Shaders"},
+
+{id:"rg",name:"RG Shader",desc:"A vibrant shader that enhances colors, lighting depth, and world realism for a more vivid experience.",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders"},
+
+{id:"backpacks",name:"Backpacks",desc:"A survival addon that adds portable backpacks for expanded inventory and better resource management.",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival"},
+
+{id:"dynamic",name:"Dynamic Lightning",desc:"An environmental enhancement addon that improves lighting realism and world atmosphere.",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival"},
+
+{id:"furni",name:"Furnicraft",desc:"A furniture addon that adds decorative and functional items for building and survival gameplay.",file:"FURNICRAFT.mcpack",img:"FURNICRAFT.png",cat:"Survival"},
+
+{id:"naturalist",name:"Naturalist",desc:"A nature expansion addon that introduces wildlife and ecosystem improvements to Minecraft worlds.",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival"},
+
+{id:"jungle",name:"Jungle House",desc:"A survival world featuring a detailed jungle house designed for exploration and gameplay immersion.",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses"},
+
+{id:"medieval",name:"Medieval House",desc:"A beautifully designed medieval survival house world with detailed architecture.",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses"},
+
+{id:"spruce",name:"Spruce House",desc:"A cozy survival house built in a peaceful spruce forest environment.",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses"},
+
+{id:"starter",name:"Starter House",desc:"A beginner-friendly survival house designed to help new players start comfortably.",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"}
 ];
 
 /* FILTER */
@@ -227,24 +245,19 @@ function filterCat(c){currentFilter=c;render();}
 /* COUNTS */
 let counts={};
 
-async function loadCounts(){
-const snap=await db.collection("downloads").get();
-snap.forEach(d=>counts[d.id]=d.data().count||0);
-}
-
-/* BADGE (NEW AUTO 7 DAYS) */
-function getBadge(p){
-const SEVEN_DAYS = 7*24*60*60*1000;
-if(p.added && Date.now()-p.added < SEVEN_DAYS){
-return "NEW";
-}
-return "";
-}
+/* REALTIME */
+db.collection("downloads").onSnapshot(snapshot=>{
+snapshot.forEach(doc=>{
+counts[doc.id]=doc.data().count||0;
+});
+render();
+renderRanking();
+});
 
 /* DOWNLOAD */
 function download(id,file){
-counts[id]=(counts[id]||0)+1;
-db.collection("downloads").doc(id).set({count:counts[id]});
+let newCount=(counts[id]||0)+1;
+db.collection("downloads").doc(id).set({count:newCount});
 
 setTimeout(()=>{
 const a=document.createElement("a");
@@ -253,11 +266,10 @@ a.download=file;
 document.body.appendChild(a);
 a.click();
 document.body.removeChild(a);
-renderTop();
 },100);
 }
 
-/* RENDER */
+/* ALL PACKS */
 function render(){
 let app=document.getElementById("app");
 let grouped={};
@@ -275,11 +287,10 @@ html+=`<div class="cat">${cat}</div><div class="grid">`;
 grouped[cat].forEach(p=>{
 html+=`
 <div class="card">
-${getBadge(p)?`<div class="badge">NEW</div>`:""}
 <img src="${p.img}">
 <h3>${p.name}</h3>
 <p class="desc">${p.desc}</p>
-<div class="counter">🔥 ${counts[p.id]||0} downloads</div>
+<div class="counter">🔥 ${counts[p.id]||0}</div>
 <button onclick="download('${p.id}','${p.file}')">Download</button>
 </div>`;
 });
@@ -290,21 +301,21 @@ html+="</div>";
 app.innerHTML=html;
 }
 
-/* TRENDING */
-function renderTop(){
-let top=Object.entries(counts)
+/* RANKING */
+function renderRanking(){
+let sorted=Object.entries(counts)
 .sort((a,b)=>b[1]-a[1])
-.slice(0,5);
+.slice(0,10);
 
 let html="<div class='grid'>";
 
-top.forEach(([id,c])=>{
+sorted.forEach(([id,c],i)=>{
 let p=packs.find(x=>x.id===id);
 if(!p)return;
 
 html+=`
 <div class="card">
-${getBadge(p)?`<div class="badge">NEW</div>`:""}
+<div class="rank">#${i+1}</div>
 <img src="${p.img}">
 <h3>${p.name}</h3>
 <p class="desc">${p.desc}</p>
@@ -324,15 +335,6 @@ document.querySelectorAll(".card").forEach(c=>{
 c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
 });
 });
-
-/* INIT */
-async function init(){
-await loadCounts();
-render();
-renderTop();
-}
-init();
-
 </script>
 
 </body>
