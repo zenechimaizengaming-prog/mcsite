@@ -123,7 +123,6 @@ color:#aaa;
 padding-bottom:5px;
 }
 
-/* NEW BADGE */
 .badge{
 position:absolute;
 top:8px;
@@ -167,6 +166,7 @@ No reinstall needed. Everything updates instantly.
 
 <div id="app"></div>
 
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
@@ -186,41 +186,39 @@ const db = firebase.firestore();
 
 /* ================= FULL PACK LIST ================= */
 const packs = [
-{id:"zenfps",name:"Zen FPS Pro",desc:"Boost FPS and reduce lag.",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
-{id:"optifire",name:"Optifire",desc:"Optimized visuals.",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},
-{id:"sodiumx",name:"Sodium X",desc:"Stable FPS pack.",file:"SodiumX.mcpack",img:"SodiumX.png",cat:"FPS"},
-{id:"asteroid",name:"Asteroid Client",desc:"FPS utilities pack.",file:"AsteroidClient.mcpack",img:"AsteroidClient.png",cat:"FPS"},
+{id:"zenfps",name:"Zen FPS Pro",desc:"Boost FPS and reduce lag for smoother gameplay.",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
+{id:"optifire",name:"Optifire",desc:"Optimized visuals for better clarity and performance.",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},
+{id:"sodiumx",name:"Sodium X",desc:"Stable FPS improvement pack for smooth gameplay.",file:"SodiumX.mcpack",img:"SodiumX.png",cat:"FPS"},
+{id:"asteroid",name:"Asteroid Client",desc:"FPS utilities pack for better performance.",file:"AsteroidClient.mcpack",img:"AsteroidClient.png",cat:"FPS"},
 
-{id:"zenpvp",name:"Zen PvP Pack",desc:"Clean PvP textures.",file:"ZenPVPPack.mcpack",img:"ZenPVPPack.png",cat:"PvP"},
-{id:"venom",name:"Venom PvP",desc:"Dark PvP style.",file:"VenomPVP.mcpack",img:"VenomPVP.png",cat:"PvP"},
-{id:"lyro",name:"Lyro PvP Ultimate",desc:"Competitive PvP pack.",file:"LyroPVPUltimate.mcpack",img:"LyroPVPUltimate.png",cat:"PvP"},
-{id:"zenutil",name:"Zen Utility HUD",desc:"Improved HUD tools.",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP"},
+{id:"zenpvp",name:"Zen PvP Pack",desc:"Clean PvP textures for better combat visibility.",file:"ZenPVPPack.mcpack",img:"ZenPVPPack.png",cat:"PvP"},
+{id:"venom",name:"Venom PvP",desc:"Dark PvP style pack for aggressive fights.",file:"VenomPVP.mcpack",img:"VenomPVP.png",cat:"PvP"},
+{id:"lyro",name:"Lyro PvP Ultimate",desc:"Competitive PvP pack for serious battles.",file:"LyroPVPUltimate.mcpack",img:"LyroPVPUltimate.png",cat:"PvP"},
+{id:"zenutil",name:"Zen Utility HUD",desc:"Improved HUD tools for better gameplay.",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP"},
 
-{id:"actions",name:"Actions & Stuff",desc:"Animations & effects.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Actions"},
+{id:"actions",name:"Actions & Stuff",desc:"Animations and effects for Minecraft gameplay.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Actions"},
 
-/* UI CATEGORY (INCLUDING HOTBAR SLOT BUTTON) */
-{id:"bedrockui",name:"Bedrock UI",desc:"Clean interface.",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI"},
-{id:"vdx",name:"VDX Desktop UI",desc:"Desktop UI style.",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI"},
-{id:"deesse",name:"Déesse UI",desc:"Elegant UI theme.",file:"DéesseUI.mcpack",img:"DéesseUI.png",cat:"UI"},
-{id:"ultra",name:"Ultramarine Nightfall",desc:"Dark UI theme.",file:"Ultramarine_Nightfall.mcpack",img:"Ultramarine_Nightfall.png",cat:"UI"},
+{id:"bedrockui",name:"Bedrock UI",desc:"Clean Minecraft interface redesign.",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI"},
+{id:"vdx",name:"VDX Desktop UI",desc:"PC-style UI layout for mobile Minecraft.",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI"},
+{id:"deesse",name:"Déesse UI",desc:"Elegant modern UI theme.",file:"DéesseUI.mcpack",img:"DéesseUI.png",cat:"UI"},
+{id:"ultra",name:"Ultramarine Nightfall",desc:"Dark UI theme for immersive gameplay.",file:"Ultramarine_Nightfall.mcpack",img:"Ultramarine_Nightfall.png",cat:"UI"},
 
-/* ✔ HOTBAR SLOT BUTTON IS HERE */
-{id:"hotbar",name:"Hotbar Slot Button",desc:"Better mobile hotbar controls.",file:"HotbarSlotButton.mcpack",img:"HotbarSlotButton.png",cat:"UI",badge:"NEW"},
+{id:"hotbar",name:"Hotbar Slot Button",desc:"Improved mobile hotbar controls for smoother gameplay.",file:"HotbarSlotButton.mcpack",img:"HotbarSlotButton.png",cat:"UI",badge:"NEW"},
 
-{id:"yummy",name:"Yummysheep Shader",desc:"Realistic lighting.",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders"},
-{id:"newb",name:"NewbX Legacy",desc:"Enhanced visuals shader.",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders"},
-{id:"nr",name:"NR Shader",desc:"Smooth lighting shader.",file:"NRShader.mcpack",img:"NRShader.png",cat:"Shaders"},
-{id:"rg",name:"RG Shader",desc:"Vibrant shader pack.",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders"},
+{id:"yummy",name:"Yummysheep Shader",desc:"Realistic lighting shader for better visuals.",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders"},
+{id:"newb",name:"NewbX Legacy",desc:"Balanced shader for performance and visuals.",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders"},
+{id:"nr",name:"NR Shader",desc:"Smooth lighting shader for enhanced world colors.",file:"NRShader.mcpack",img:"NRShader.png",cat:"Shaders"},
+{id:"rg",name:"RG Shader",desc:"Vibrant shader with colorful lighting effects.",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders"},
 
-{id:"backpacks",name:"Backpacks",desc:"Extra inventory addon.",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival"},
-{id:"dynamic",name:"Dynamic Lightning",desc:"Lighting effects addon.",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival"},
-{id:"furni",name:"Furnicraft",desc:"Furniture addon.",file:"FURNICRAFT.mcpack",img:"FURNICRAFT.png",cat:"Survival"},
-{id:"naturalist",name:"Naturalist",desc:"Animals & nature addon.",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival"},
+{id:"backpacks",name:"Backpacks",desc:"Extra inventory system for survival mode.",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival"},
+{id:"dynamic",name:"Dynamic Lightning",desc:"Improved lighting effects for immersive gameplay.",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival"},
+{id:"furni",name:"Furnicraft",desc:"Furniture addon to decorate your world.",file:"FURNICRAFT.mcpack",img:"FURNICRAFT.png",cat:"Survival"},
+{id:"naturalist",name:"Naturalist",desc:"Adds animals and nature to your world.",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival"},
 
-{id:"jungle",name:"Jungle House",desc:"Survival house world.",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses"},
-{id:"medieval",name:"Medieval House",desc:"Medieval build world.",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses"},
-{id:"spruce",name:"Spruce House",desc:"Cozy survival house.",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses"},
-{id:"starter",name:"Starter House",desc:"Beginner house world.",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"}
+{id:"jungle",name:"Jungle House",desc:"Survival jungle house world download.",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses"},
+{id:"medieval",name:"Medieval House",desc:"Medieval survival house world.",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses"},
+{id:"spruce",name:"Spruce House",desc:"Cozy survival house world.",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses"},
+{id:"starter",name:"Starter House",desc:"Beginner survival house world.",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"}
 ];
 
 /* FILTER */
