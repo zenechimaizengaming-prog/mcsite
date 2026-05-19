@@ -134,6 +134,18 @@ padding:4px 6px;
 border-radius:6px;
 font-weight:bold;
 }
+
+.badge{
+position:absolute;
+top:8px;
+right:8px;
+background:red;
+color:white;
+font-size:10px;
+padding:4px 6px;
+border-radius:6px;
+font-weight:bold;
+}
 </style>
 </head>
 
@@ -158,12 +170,11 @@ Real-time ranking system enabled ⚡
 <button onclick="filterCat('Survival')">Survival</button>
 <button onclick="filterCat('Houses')">Houses</button>
 <button onclick="filterCat('UI')">UI</button>
-<button onclick="filterCat('Actions')">Actions</button>
+<button onclick="filterCat('Realistic')">Realistic</button>
 </div>
 
 <div class="cat">🏆 Live Most Downloaded Ranking</div>
 <div id="top"></div>
-
 <div id="app"></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -183,8 +194,9 @@ appId: "1:770814437665:web:bb3958093106809ed67660"
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-/* ================= PACKS (ONLY DESC IMPROVED) ================= */
+/* ================= PACKS ================= */
 const packs = [
+
 {id:"zenfps",name:"Zen FPS Pro",desc:"A high-performance optimization pack designed to significantly improve FPS stability, reduce lag spikes, and enhance overall gameplay smoothness for a more consistent Minecraft Bedrock experience.",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
 
 {id:"optifire",name:"Optifire",desc:"An advanced performance and visual optimization pack that balances smooth frame rates with improved graphical clarity for a more stable gameplay experience.",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},
@@ -201,8 +213,13 @@ const packs = [
 
 {id:"zenutil",name:"Zen Utility HUD",desc:"A refined HUD system that enhances player awareness and simplifies interface design for better combat efficiency.",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP"},
 
-{id:"actions",name:"Actions & Stuff",desc:"A visual enhancement pack that improves animations, movement transitions, and overall gameplay immersion.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Actions"},
+/* REALISTIC CATEGORY */
 
+{id:"actions",name:"Actions & Stuff",desc:"A visual enhancement pack that improves animations, movement transitions, and overall gameplay immersion.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Realistic"},
+
+{id:"betterbedrock",name:"Better on Bedrock",desc:"A realism enhancement pack that improves Minecraft visuals, textures, and immersion.",file:"BetterONBedrock.mcaddon",img:"BetterONBedrock.png",cat:"Realistic",badge:"NEW"},
+
+/* UI */
 {id:"bedrockui",name:"Bedrock UI",desc:"A modern UI redesign that improves navigation, readability, and overall interface usability in Minecraft Bedrock.",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI"},
 
 {id:"vdx",name:"VDX Desktop UI",desc:"A desktop-inspired UI pack that transforms mobile Minecraft into a clean PC-style interface experience.",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI"},
@@ -213,6 +230,7 @@ const packs = [
 
 {id:"hotbar",name:"Hotbar Slot Button",desc:"An enhanced control pack that improves hotbar responsiveness and makes slot switching faster and smoother.",file:"HotbarSlotButton.mcpack",img:"HotbarSlotButton.png",cat:"UI"},
 
+/* SHADERS */
 {id:"yummy",name:"Yummysheep Shader",desc:"A realistic shader pack that enhances lighting, shadows, reflections, and water effects for immersive visuals.",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders"},
 
 {id:"newb",name:"NewbX Legacy",desc:"A balanced shader that improves world visuals while maintaining smooth performance across devices.",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders"},
@@ -221,6 +239,7 @@ const packs = [
 
 {id:"rg",name:"RG Shader",desc:"A vibrant shader that enhances colors, lighting depth, and world realism for a more vivid experience.",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders"},
 
+/* SURVIVAL */
 {id:"backpacks",name:"Backpacks",desc:"A survival addon that adds portable backpacks for expanded inventory and better resource management.",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival"},
 
 {id:"dynamic",name:"Dynamic Lightning",desc:"An environmental enhancement addon that improves lighting realism and world atmosphere.",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival"},
@@ -229,6 +248,7 @@ const packs = [
 
 {id:"naturalist",name:"Naturalist",desc:"A nature expansion addon that introduces wildlife and ecosystem improvements to Minecraft worlds.",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival"},
 
+/* HOUSES */
 {id:"jungle",name:"Jungle House",desc:"A survival world featuring a detailed jungle house designed for exploration and gameplay immersion.",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses"},
 
 {id:"medieval",name:"Medieval House",desc:"A beautifully designed medieval survival house world with detailed architecture.",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses"},
@@ -236,16 +256,16 @@ const packs = [
 {id:"spruce",name:"Spruce House",desc:"A cozy survival house built in a peaceful spruce forest environment.",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses"},
 
 {id:"starter",name:"Starter House",desc:"A beginner-friendly survival house designed to help new players start comfortably.",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"}
+
 ];
 
 /* FILTER */
 let currentFilter="ALL";
 function filterCat(c){currentFilter=c;render();}
 
-/* COUNTS */
+/* DOWNLOADS */
 let counts={};
 
-/* REALTIME */
 db.collection("downloads").onSnapshot(snapshot=>{
 snapshot.forEach(doc=>{
 counts[doc.id]=doc.data().count||0;
@@ -254,7 +274,6 @@ render();
 renderRanking();
 });
 
-/* DOWNLOAD */
 function download(id,file){
 let newCount=(counts[id]||0)+1;
 db.collection("downloads").doc(id).set({count:newCount});
@@ -269,7 +288,7 @@ document.body.removeChild(a);
 },100);
 }
 
-/* ALL PACKS */
+/* RENDER */
 function render(){
 let app=document.getElementById("app");
 let grouped={};
@@ -287,6 +306,7 @@ html+=`<div class="cat">${cat}</div><div class="grid">`;
 grouped[cat].forEach(p=>{
 html+=`
 <div class="card">
+${p.badge?`<div class="badge">${p.badge}</div>`:""}
 <img src="${p.img}">
 <h3>${p.name}</h3>
 <p class="desc">${p.desc}</p>
@@ -303,10 +323,7 @@ app.innerHTML=html;
 
 /* RANKING */
 function renderRanking(){
-let sorted=Object.entries(counts)
-.sort((a,b)=>b[1]-a[1])
-.slice(0,10);
-
+let sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10);
 let html="<div class='grid'>";
 
 sorted.forEach(([id,c],i)=>{

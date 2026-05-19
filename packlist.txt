@@ -12,6 +12,8 @@ DéesseUI.mcpack
 DéesseUI.png
 FURNICRAFT.mcpack
 FURNICRAFT.png
+HotbarSlotButton.mcpack
+HotbarSlotButton.png
 JungleSurvivalHouse.mcworld
 JungleSurvivalHouse.png
 LyroPVPUltimate.mcpack
@@ -49,4 +51,3 @@ ZenPVPPack.png
 ZenUtilityHUD.mcpack
 ZenUtilityHUD.png
 index.html
-packlist.txt
