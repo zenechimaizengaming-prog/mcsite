@@ -1,356 +1,396 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>MCPE Packs Hub</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body{
-margin:0;
-font-family:Arial;
-background:linear-gradient(180deg,#0d0d0d,#0a0a0a);
-color:white;
-}
-
-.header{
-text-align:center;
-padding:25px;
-background:linear-gradient(90deg,#00c853,#00b0ff);
-font-size:22px;
-font-weight:bold;
-}
-
-.info{
-margin:10px;
-padding:10px;
-background:#1b5e20;
-border-radius:10px;
-text-align:center;
-font-size:13px;
-}
-
-.search{
-text-align:center;
-padding:10px;
-}
-
-input{
-width:90%;
-max-width:400px;
-padding:12px;
-border-radius:12px;
-border:none;
-outline:none;
-}
-
-.filters{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:8px;
-padding:10px;
-}
-
-.filters button{
-padding:8px 12px;
-border:none;
-border-radius:20px;
-background:#1f1f1f;
-color:white;
-cursor:pointer;
-font-size:12px;
-}
-
-.filters button:hover{
-background:#00c853;
-}
-
-.cat{
-padding:12px;
-font-size:18px;
-color:#00e676;
-font-weight:bold;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:10px;
-padding:10px;
-}
-
-.card{
-background:#1a1a1a;
-border-radius:12px;
-overflow:hidden;
-border:1px solid #333;
-text-align:center;
-position:relative;
-}
-
-.card img{
-width:100%;
-height:120px;
-object-fit:cover;
-}
-
-.card h3{
-font-size:14px;
-margin:5px;
-}
-
-.desc{
-font-size:12px;
-color:#bbb;
-padding:0 8px 8px;
-min-height:40px;
-}
-
-.counter{
-font-size:12px;
-color:#aaa;
-padding-bottom:5px;
-}
-
-.card button{
-width:100%;
-padding:8px;
-background:#00c853;
-border:none;
-color:white;
-font-weight:bold;
-cursor:pointer;
-}
-
-.rank{
-position:absolute;
-top:8px;
-left:8px;
-background:gold;
-color:black;
-font-size:11px;
-padding:4px 6px;
-border-radius:6px;
-font-weight:bold;
-}
-
-.badge{
-position:absolute;
-top:8px;
-right:8px;
-background:red;
-color:white;
-font-size:10px;
-padding:4px 6px;
-border-radius:6px;
-font-weight:bold;
-}
-</style>
-</head>
-
-<body>
-
-<div class="header">🔥 MCPE Packs Hub</div>
-
-<div class="info">
-🚀 Live Web App — updates automatically from GitHub<br>
-Real-time ranking system enabled ⚡
-</div>
-
-<div class="search">
-<input id="search" placeholder="Search packs...">
-</div>
-
-<div class="filters">
-<button onclick="filterCat('ALL')">ALL</button>
-<button onclick="filterCat('FPS')">FPS</button>
-<button onclick="filterCat('PvP')">PvP</button>
-<button onclick="filterCat('Shaders')">Shaders</button>
-<button onclick="filterCat('Survival')">Survival</button>
-<button onclick="filterCat('Houses')">Houses</button>
-<button onclick="filterCat('UI')">UI</button>
-<button onclick="filterCat('Realistic')">Realistic</button>
-</div>
-
-<div class="cat">🏆 Live Most Downloaded Ranking</div>
-<div id="top"></div>
-<div id="app"></div>
-
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
-<script>
-
-const firebaseConfig = {
-apiKey: "AIzaSyAnAJG_TFMX3CbTbdo3MD3KHk8rK8TxIMY",
-authDomain: "mcpackss-62645.firebaseapp.com",
-projectId: "mcpackss-62645",
-storageBucket: "mcpackss-62645.firebasestorage.app",
-messagingSenderId: "770814437665",
-appId: "1:770814437665:web:bb3958093106809ed67660"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-/* ================= PACKS ================= */
-const packs = [
-
-{id:"zenfps",name:"Zen FPS Pro",desc:"A high-performance optimization pack designed to significantly improve FPS stability, reduce lag spikes, and enhance overall gameplay smoothness for a more consistent Minecraft Bedrock experience.",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},
-
-{id:"optifire",name:"Optifire",desc:"An advanced performance and visual optimization pack that balances smooth frame rates with improved graphical clarity for a more stable gameplay experience.",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},
-
-{id:"sodiumx",name:"Sodium X",desc:"A lightweight performance enhancement pack focused on improving rendering efficiency, reducing stutters, and increasing overall game responsiveness.",file:"SodiumX.mcpack",img:"SodiumX.png",cat:"FPS"},
-
-{id:"asteroid",name:"Asteroid Client",desc:"A utility performance pack designed to improve input responsiveness, reduce lag, and enhance gameplay stability across all devices.",file:"AsteroidClient.mcpack",img:"AsteroidClient.png",cat:"FPS"},
-
-{id:"zenpvp",name:"Zen PvP Pack",desc:"A competitive PvP texture pack designed for clearer visuals, improved enemy detection, and reduced distractions during combat.",file:"ZenPVPPack.mcpack",img:"ZenPVPPack.png",cat:"PvP"},
-
-{id:"venom",name:"Venom PvP",desc:"A dark-themed PvP pack that enhances contrast and improves enemy visibility for more focused combat performance.",file:"VenomPVP.mcpack",img:"VenomPVP.png",cat:"PvP"},
-
-{id:"lyro",name:"Lyro PvP Ultimate",desc:"A premium PvP pack designed to improve reaction timing, visual clarity, and overall competitive gameplay performance.",file:"LyroPVPUltimate.mcpack",img:"LyroPVPUltimate.png",cat:"PvP"},
-
-{id:"zenutil",name:"Zen Utility HUD",desc:"A refined HUD system that enhances player awareness and simplifies interface design for better combat efficiency.",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP"},
-
-/* REALISTIC CATEGORY */
-
-{id:"actions",name:"Actions & Stuff",desc:"A visual enhancement pack that improves animations, movement transitions, and overall gameplay immersion.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Realistic"},
-
-{id:"betterbedrock",name:"Better on Bedrock",desc:"A realism enhancement pack that improves Minecraft visuals, textures, and immersion.",file:"BetterONBedrock.mcaddon",img:"BetterONBedrock.png",cat:"Realistic",badge:"NEW"},
-
-/* UI */
-{id:"bedrockui",name:"Bedrock UI",desc:"A modern UI redesign that improves navigation, readability, and overall interface usability in Minecraft Bedrock.",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI"},
-
-{id:"vdx",name:"VDX Desktop UI",desc:"A desktop-inspired UI pack that transforms mobile Minecraft into a clean PC-style interface experience.",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI"},
-
-{id:"deesse",name:"Déesse UI",desc:"An elegant UI theme designed with smooth visuals, modern layout structure, and improved readability.",file:"DéesseUI.mcpack",img:"DéesseUI.png",cat:"UI"},
-
-{id:"ultra",name:"Ultramarine Nightfall",desc:"A dark immersive UI theme designed to reduce eye strain while providing a stylish interface experience.",file:"Ultramarine_Nightfall.mcpack",img:"Ultramarine_Nightfall.png",cat:"UI"},
-
-{id:"hotbar",name:"Hotbar Slot Button",desc:"An enhanced control pack that improves hotbar responsiveness and makes slot switching faster and smoother.",file:"HotbarSlotButton.mcpack",img:"HotbarSlotButton.png",cat:"UI"},
-
-/* SHADERS */
-{id:"yummy",name:"Yummysheep Shader",desc:"A realistic shader pack that enhances lighting, shadows, reflections, and water effects for immersive visuals.",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders"},
-
-{id:"newb",name:"NewbX Legacy",desc:"A balanced shader that improves world visuals while maintaining smooth performance across devices.",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders"},
-
-{id:"nr",name:"NR Shader",desc:"A smooth lighting shader that enhances color tone, shadow quality, and environmental atmosphere.",file:"NRShader.mcpack",img:"NRShader.png",cat:"Shaders"},
-
-{id:"rg",name:"RG Shader",desc:"A vibrant shader that enhances colors, lighting depth, and world realism for a more vivid experience.",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders"},
-
-/* SURVIVAL */
-{id:"backpacks",name:"Backpacks",desc:"A survival addon that adds portable backpacks for expanded inventory and better resource management.",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival"},
-
-{id:"dynamic",name:"Dynamic Lightning",desc:"An environmental enhancement addon that improves lighting realism and world atmosphere.",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival"},
-
-{id:"furni",name:"Furnicraft",desc:"A furniture addon that adds decorative and functional items for building and survival gameplay.",file:"FURNICRAFT.mcpack",img:"FURNICRAFT.png",cat:"Survival"},
-
-{id:"naturalist",name:"Naturalist",desc:"A nature expansion addon that introduces wildlife and ecosystem improvements to Minecraft worlds.",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival"},
-
-/* HOUSES */
-{id:"jungle",name:"Jungle House",desc:"A survival world featuring a detailed jungle house designed for exploration and gameplay immersion.",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses"},
-
-{id:"medieval",name:"Medieval House",desc:"A beautifully designed medieval survival house world with detailed architecture.",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses"},
-
-{id:"spruce",name:"Spruce House",desc:"A cozy survival house built in a peaceful spruce forest environment.",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses"},
-
-{id:"starter",name:"Starter House",desc:"A beginner-friendly survival house designed to help new players start comfortably.",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"}
-
-];
-
-/* FILTER */
-let currentFilter="ALL";
-function filterCat(c){currentFilter=c;render();}
-
-/* DOWNLOADS */
-let counts={};
-
-db.collection("downloads").onSnapshot(snapshot=>{
-snapshot.forEach(doc=>{
-counts[doc.id]=doc.data().count||0;
-});
-render();
-renderRanking();
-});
-
-function download(id,file){
-let newCount=(counts[id]||0)+1;
-db.collection("downloads").doc(id).set({count:newCount});
-
-setTimeout(()=>{
-const a=document.createElement("a");
-a.href="./"+file+"?v="+Date.now();
-a.download=file;
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);
-},100);
-}
-
-/* RENDER */
-function render(){
-let app=document.getElementById("app");
-let grouped={};
-
-packs.forEach(p=>{
-if(currentFilter!="ALL" && p.cat!=currentFilter) return;
-if(!grouped[p.cat]) grouped[p.cat]=[];
-grouped[p.cat].push(p);
-});
-
-let html="";
-for(let cat in grouped){
-html+=`<div class="cat">${cat}</div><div class="grid">`;
-
-grouped[cat].forEach(p=>{
-html+=`
-<div class="card">
-${p.badge?`<div class="badge">${p.badge}</div>`:""}
-<img src="${p.img}">
-<h3>${p.name}</h3>
-<p class="desc">${p.desc}</p>
-<div class="counter">🔥 ${counts[p.id]||0}</div>
-<button onclick="download('${p.id}','${p.file}')">Download</button>
-</div>`;
-});
-
-html+="</div>";
-}
-
-app.innerHTML=html;
-}
-
-/* RANKING */
-function renderRanking(){
-let sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10);
-let html="<div class='grid'>";
-
-sorted.forEach(([id,c],i)=>{
-let p=packs.find(x=>x.id===id);
-if(!p)return;
-
-html+=`
-<div class="card">
-<div class="rank">#${i+1}</div>
-<img src="${p.img}">
-<h3>${p.name}</h3>
-<p class="desc">${p.desc}</p>
-<div class="counter">🔥 ${c}</div>
-<button onclick="download('${p.id}','${p.file}')">Download</button>
-</div>`;
-});
-
-html+="</div>";
-document.getElementById("top").innerHTML=html;
-}
-
-/* SEARCH */
-document.getElementById("search").addEventListener("input",e=>{
-let v=e.target.value.toLowerCase();
-document.querySelectorAll(".card").forEach(c=>{
-c.style.display=c.innerText.toLowerCase().includes(v)?"block":"none";
-});
+<!DOCTYPE html>  <html>  
+<head>  
+<meta charset="UTF-8">  
+<title>MCPE Packs Hub</title>  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  <style>  
+body{  
+margin:0;  
+font-family:Arial;  
+background:linear-gradient(180deg,#0d0d0d,#0a0a0a);  
+color:white;  
+}  
+  
+.header{  
+text-align:center;  
+padding:25px;  
+background:linear-gradient(90deg,#00c853,#00b0ff);  
+font-size:22px;  
+font-weight:bold;  
+}  
+  
+.info{  
+margin:10px;  
+padding:10px;  
+background:#1b5e20;  
+border-radius:10px;  
+text-align:center;  
+font-size:13px;  
+}  
+  
+.search{  
+text-align:center;  
+padding:10px;  
+}  
+  
+input{  
+width:90%;  
+max-width:400px;  
+padding:12px;  
+border-radius:12px;  
+border:none;  
+outline:none;  
+}  
+  
+.filters{  
+display:flex;  
+flex-wrap:wrap;  
+justify-content:center;  
+gap:8px;  
+padding:10px;  
+}  
+  
+.filters button{  
+padding:8px 12px;  
+border:none;  
+border-radius:20px;  
+background:#1f1f1f;  
+color:white;  
+cursor:pointer;  
+font-size:12px;  
+}  
+  
+.filters button:hover{  
+background:#00c853;  
+}  
+  
+.cat{  
+padding:12px;  
+font-size:18px;  
+color:#00e676;  
+font-weight:bold;  
+}  
+  
+.grid{  
+display:grid;  
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));  
+gap:10px;  
+padding:10px;  
+}  
+  
+.card{  
+background:#1a1a1a;  
+border-radius:12px;  
+overflow:hidden;  
+border:1px solid #333;  
+text-align:center;  
+position:relative;  
+}  
+  
+.card img{  
+width:100%;  
+height:120px;  
+object-fit:cover;  
+}  
+  
+.card h3{  
+font-size:14px;  
+margin:5px;  
+}  
+  
+.desc{  
+font-size:12px;  
+color:#bbb;  
+padding:0 8px 8px;  
+min-height:55px;  
+}  
+  
+.counter{  
+font-size:12px;  
+color:#aaa;  
+padding-bottom:5px;  
+}  
+  
+.card button{  
+width:100%;  
+padding:8px;  
+background:#00c853;  
+border:none;  
+color:white;  
+font-weight:bold;  
+cursor:pointer;  
+}  
+  
+.rank{  
+position:absolute;  
+top:8px;  
+left:8px;  
+background:gold;  
+color:black;  
+font-size:11px;  
+padding:4px 6px;  
+border-radius:6px;  
+font-weight:bold;  
+}  
+  
+.newbadge{  
+position:absolute;  
+top:8px;  
+right:8px;  
+background:#ff1744;  
+color:white;  
+font-size:10px;  
+padding:4px 6px;  
+border-radius:6px;  
+font-weight:bold;  
+}  
+</style>  </head>  <body>  <div class="header">🔥 MCPE Packs Hub</div>  <div class="info">  
+✅ Works on Minecraft Bedrock 1.21+<br>  
+📦 Supports latest MCPE versions and updates  
+</div>  <div class="info">  
+🚀 Live Web App — updates automatically from GitHub<br>  
+Real-time ranking system enabled ⚡  
+</div>  <div class="search">  
+<input id="search" placeholder="Search packs...">  
+</div>  <div class="filters">  
+<button onclick="filterCat('ALL')">ALL</button>  
+<button onclick="filterCat('FPS')">FPS</button>  
+<button onclick="filterCat('PvP')">PvP</button>  
+<button onclick="filterCat('Shaders')">Shaders</button>  
+<button onclick="filterCat('Survival')">Survival</button>  
+<button onclick="filterCat('Houses')">Houses</button>  
+<button onclick="filterCat('UI')">UI</button>  
+<button onclick="filterCat('Realistic')">Realistic</button>  
+<button onclick="filterCat('Utility')">Utility</button>  
+<button onclick="filterCat('Fun')">Fun</button>  
+</div>  <div class="cat">🏆 Live Most Downloaded Ranking</div>  
+<div id="top"></div>  <div id="app"></div>  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>  <script>  
+  
+const firebaseConfig = {  
+apiKey: "AIzaSyAnAJG_TFMX3CbTbdo3MD3KHk8rK8TxIMY",  
+authDomain: "mcpackss-62645.firebaseapp.com",  
+projectId: "mcpackss-62645",  
+storageBucket: "mcpackss-62645.firebasestorage.app",  
+messagingSenderId: "770814437665",  
+appId: "1:770814437665:web:bb3958093106809ed67660"  
+};  
+  
+firebase.initializeApp(firebaseConfig);  
+const db = firebase.firestore();  
+  
+const packs = [  
+  
+{id:"zenfps",name:"Zen FPS Pro",desc:"A high-performance optimization pack designed to improve FPS and reduce lag.",file:"ZenFPS_PRO.mcpack",img:"ZenFPS_PRO.png",cat:"FPS"},  
+  
+{id:"optifire",name:"Optifire",desc:"Advanced FPS and graphics optimization pack for smoother gameplay.",file:"Optifire.mcpack",img:"Optifire.png",cat:"FPS"},  
+  
+{id:"sodiumx",name:"Sodium X",desc:"Lightweight FPS booster focused on rendering optimization.",file:"SodiumX.mcpack",img:"SodiumX.png",cat:"FPS"},  
+  
+{id:"asteroid",name:"Asteroid Client",desc:"Performance client pack that improves gameplay responsiveness.",file:"AsteroidClient.mcpack",img:"AsteroidClient.png",cat:"FPS"},  
+  
+{id:"zenpvp",name:"Zen PvP Pack",desc:"Competitive PvP texture pack with cleaner visuals and smoother combat.",file:"ZenPVPPack.mcpack",img:"ZenPVPPack.png",cat:"PvP"},  
+  
+{id:"venom",name:"Venom PvP",desc:"Dark-themed PvP pack designed for better enemy visibility.",file:"VenomPVP.mcpack",img:"VenomPVP.png",cat:"PvP"},  
+  
+{id:"lyro",name:"Lyro PvP Ultimate",desc:"PvP enhancement pack for competitive Minecraft players.",file:"LyroPVPUltimate.mcpack",img:"LyroPVPUltimate.png",cat:"PvP"},  
+  
+{id:"zenutil",name:"Zen Utility HUD",desc:"Utility HUD pack improving combat awareness and gameplay.",file:"ZenUtilityHUD.mcpack",img:"ZenUtilityHUD.png",cat:"PvP"},  
+  
+{id:"actions",name:"Actions & Stuff",desc:"Improves player animations and realism for immersive gameplay.",file:"Actions-and-Stuff.mcpack",img:"Actions-and-Stuff.png",cat:"Realistic"},  
+  
+{id:"betterbedrock",name:"Better On Bedrock",desc:"Massive realism enhancement pack with improved visuals and gameplay immersion.",file:"BetterONBedrock.mcaddon",img:"BetterONBedrock.png",cat:"Realistic",new:true},  
+  
+{id:"bedrockui",name:"Bedrock UI",desc:"Modern UI redesign with cleaner interface and navigation.",file:"BedrockUI.mcpack",img:"BedrockUI.png",cat:"UI"},  
+  
+{id:"vdx",name:"VDX Desktop UI",desc:"Transforms mobile Minecraft UI into a desktop-style experience.",file:"VDXDesktopUI.mcpack",img:"VDXDesktopUI.png",cat:"UI"},  
+  
+{id:"deesse",name:"Déesse UI",desc:"Elegant UI pack with modern visuals and readability improvements.",file:"DéesseUI.mcpack",img:"DéesseUI.png",cat:"UI"},  
+  
+{id:"ultra",name:"Ultramarine Nightfall",desc:"Dark themed interface pack reducing eye strain.",file:"Ultramarine_Nightfall.mcpack",img:"Ultramarine_Nightfall.png",cat:"UI"},  
+  
+{id:"hotbar",name:"Hotbar Slot Button",desc:"Enhances hotbar responsiveness and controls.",file:"HotbarSlotButton.mcpack",img:"HotbarSlotButton.png",cat:"UI"},  
+  
+{id:"yummy",name:"Yummysheep Shader",desc:"Realistic shader improving shadows, water and lighting.",file:"YummysheepShader.mcpack",img:"YummysheepShader.png",cat:"Shaders"},  
+  
+{id:"newb",name:"NewbX Legacy",desc:"Balanced shader pack with smooth visuals and good performance.",file:"NewbXLegacy.mcpack",img:"NewbXLegacy.png",cat:"Shaders"},  
+  
+{id:"nr",name:"NR Shader",desc:"Enhances environmental atmosphere and lighting effects.",file:"NRShader.mcpack",img:"NRShader.png",cat:"Shaders"},  
+  
+{id:"rg",name:"RG Shader",desc:"Vibrant shader improving world colors and realism.",file:"RGShader.mcpack",img:"RGShader.png",cat:"Shaders"},  
+  
+{id:"backpacks",name:"Backpacks",desc:"Adds portable backpacks with expanded inventory storage.",file:"Backpacks.mcaddon",img:"Backpacks.png",cat:"Survival"},  
+  
+{id:"dynamic",name:"Dynamic Lightning",desc:"Enhances environmental lighting and atmosphere.",file:"DynamicLightning.mcaddon",img:"DynamicLightning.png",cat:"Survival"},  
+  
+{id:"furni",name:"Furnicraft",desc:"Furniture addon with decorative and functional blocks.",file:"FURNICRAFT.mcpack",img:"FURNICRAFT.png",cat:"Survival"},  
+  
+{id:"naturalist",name:"Naturalist",desc:"Adds wildlife and realistic ecosystem improvements.",file:"Naturalist.mcaddon",img:"Naturalist.png",cat:"Survival"},  
+  
+{id:"jungle",name:"Jungle House",desc:"Detailed jungle survival house world.",file:"JungleSurvivalHouse.mcworld",img:"JungleSurvivalHouse.png",cat:"Houses"},  
+  
+{id:"medieval",name:"Medieval House",desc:"Beautiful medieval survival world build.",file:"MedievalHouse.mcworld",img:"MedievalHouse.png",cat:"Houses"},  
+  
+{id:"spruce",name:"Spruce House",desc:"Peaceful spruce forest survival house.",file:"SpruceSurvivalHouse.mcworld",img:"SpruceSurvivalHouse.png",cat:"Houses"},  
+  
+{id:"starter",name:"Starter House",desc:"Beginner-friendly starter survival house.",file:"StarterHouseSurvival.mcworld",img:"StarterHouseSurvival.png",cat:"Houses"},  
+  
+{id:"starfps",name:"Star FPS Counter",desc:"Displays live FPS counter while playing Minecraft.",file:"StarFPSCounter.mcpack",img:"StarFPSCounter.png",cat:"Utility",new:true},  
+  
+{id:"durability",name:"Durability Viewer",desc:"Shows item durability clearly inside inventory and gameplay.",file:"DurabilityViewer.mcpack",img:"DurabilityViewer.png",cat:"Utility",new:true},  
+  
+{id:"villager",name:"Villager Trade Previewer",desc:"Preview villager trades before unlocking them.",file:"VillagerTradePreviewerUnlock.mcpack",img:"VillagerTradePreviewerUnlock.png",cat:"Utility",new:true},  
+  
+{id:"foodstats",name:"Food Stats",desc:"Shows hunger and saturation information in-game.",file:"FoodStats.mcpack",img:"FoodStats.png",cat:"Utility",new:true},  
+  
+{id:"iteminfo",name:"Item Info",desc:"Displays detailed information about items and blocks.",file:"ItemInfo.mcpack",img:"ItemInfo.png",cat:"Utility",new:true},  
+  
+{id:"brewing",name:"Brewing Potion Guide",desc:"In-game potion brewing guide for survival gameplay.",file:"BrewingPotionGuide.mcpack",img:"BrewingPotionGuide.png",cat:"Utility",new:true},  
+  
+{id:"baby",name:"Baby Player",desc:"Fun resource pack that changes player size into baby form.",file:"Babyplayer.mcpack",img:"Babyplayer.png",cat:"Fun",new:true},  
+  
+{id:"f1f3",name:"F1 F3 Button",desc:"Adds quick access buttons for interface controls.",file:"F1F3Button.mcpack",img:"F1F3Button.png",cat:"Utility",new:true},  
+  
+{id:"inventory",name:"Inventory Organizer",desc:"Helps organize inventory management more efficiently.",file:"InventoryOrganizer.mcpack",img:"InventoryOrganizer.png",cat:"Utility",new:true},  
+  
+{id:"bossbar",name:"Enhanced Boss Bars",desc:"Improves boss bar visuals and readability.",file:"EnhancedBossBars.mcpack",img:"EnhancedBossBars.png",cat:"Utility",new:true},  
+  
+{id:"lanature",name:"La Nature",desc:"Nature enhancement pack improving environmental visuals.",file:"LaNature.mcpack",img:"LaNature.png",cat:"Realistic",new:true}  
+  
+];  
+  
+let currentFilter="ALL";  
+function filterCat(c){  
+currentFilter=c;  
+render();  
+}  
+  
+let counts={};  
+  
+db.collection("downloads").onSnapshot(snapshot=>{  
+snapshot.forEach(doc=>{  
+counts[doc.id]=doc.data().count||0;  
+});  
+render();  
+renderRanking();  
+});  
+  
+function download(id,file){  
+let newCount=(counts[id]||0)+1;  
+  
+db.collection("downloads").doc(id).set({  
+count:newCount  
+});  
+  
+setTimeout(()=>{  
+const a=document.createElement("a");  
+a.href="./"+file+"?v="+Date.now();  
+a.download=file;  
+document.body.appendChild(a);  
+a.click();  
+document.body.removeChild(a);  
+},100);  
+}  
+  
+function render(){  
+  
+let app=document.getElementById("app");  
+let grouped={};  
+  
+packs.forEach(p=>{  
+  
+if(currentFilter!="ALL" && p.cat!=currentFilter) return;  
+  
+if(!grouped[p.cat]) grouped[p.cat]=[];  
+  
+grouped[p.cat].push(p);  
+  
+});  
+  
+let html="";  
+  
+for(let cat in grouped){  
+  
+html+=`<div class="cat">${cat}</div><div class="grid">`;  
+  
+grouped[cat].forEach(p=>{  
+  
+html+=`  
+<div class="card">  
+  
+${p.new ? `<div class="newbadge">NEW</div>` : ``}  
+  
+<img src="${p.img}">  
+  
+<h3>${p.name}</h3>  
+  
+<p class="desc">${p.desc}</p>  
+  
+<div class="counter">🔥 ${counts[p.id]||0} Downloads</div>  
+  
+<button onclick="download('${p.id}','${p.file}')">  
+Download  
+</button>  
+  
+</div>  
+`;  
+  
+});  
+  
+html+="</div>";  
+}  
+  
+app.innerHTML=html;  
+}  
+  
+function renderRanking(){  
+  
+let sorted=Object.entries(counts)  
+.sort((a,b)=>b[1]-a[1])  
+.slice(0,10);  
+  
+let html="<div class='grid'>";  
+  
+sorted.forEach(([id,c],i)=>{  
+  
+let p=packs.find(x=>x.id===id);  
+  
+if(!p) return;  
+  
+html+=`  
+<div class="card">  
+  
+<div class="rank">#${i+1}</div>  
+  
+<img src="${p.img}">  
+  
+<h3>${p.name}</h3>  
+  
+<p class="desc">${p.desc}</p>  
+  
+<div class="counter">🔥 ${c} Downloads</div>  
+  
+<button onclick="download('${p.id}','${p.file}')">  
+Download  
+</button>  
+  
+</div>  
+`;  
+  
+});  
+  
+html+="</div>";  
+  
+document.getElementById("top").innerHTML=html;  
+}  
+  
+render();  
+renderRanking();  
+  
+document.getElementById("search").addEventListener("input", e => {  
+  let v = e.target.value.toLowerCase();  
+  
+  document.querySelectorAll(".card").forEach(c => {  
+    c.style.display = c.innerText.toLowerCase().includes(v) ? "block" : "none";  
+  });  
 });
 </script>
 
